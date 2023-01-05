@@ -261,4 +261,43 @@
         <renameTable oldTableName="runtime_config" newTableName="runtime_setting"/>
     </changeSet>
 
+    <changeSet id="12" author="wangyi">
+        <addColumn tableName="app_user">
+            <column name="points" type="DOUBLE" defaultValueBoolean="0.0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="13" author="wangyi">
+        <addColumn tableName="bet">
+            <column name="bet_type" type="varchar(45)"/>
+            <column name="odds" type="DOUBLE"/>
+            <column name="reward" type="DOUBLE"/>
+        </addColumn>
+        <dropColumn tableName="bet">
+            <column name="goals_team_one"></column>
+            <column name="goals_team_two"></column>
+        </dropColumn>
+        <modifyDataType 
+            columnName="points"  
+            newDataType="DOUBLE"
+            tableName="person"/>
+    </changeSet>
+
+    <changeSet id="14" author="wangyi">
+        <addColumn tableName="matches">
+            <column name="win_odds" type="DOUBLE" defaultValueBoolean="0.0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="draw_odds" type="DOUBLE" defaultValueBoolean="0.0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lose_odds" type="DOUBLE" defaultValueBoolean="0.0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+
 </databaseChangeLog>
