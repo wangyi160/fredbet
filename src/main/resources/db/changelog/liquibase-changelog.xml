@@ -37,7 +37,7 @@
             <column name="match_id" type="BIGINT"/>
             <column name="PENALTY_WINNER_ONE" type="boolean" defaultValueBoolean="false"/>
         </createTable>
-        <addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet"/>
+        <!-- <addUniqueConstraint columnNames="user_name, match_id" tableName="bet" constraintName="idx_bet"/> -->
         <createIndex tableName="bet" indexName="idx_user_name">
             <column name="user_name" type="varchar(100)">
                 <constraints nullable="false"/>

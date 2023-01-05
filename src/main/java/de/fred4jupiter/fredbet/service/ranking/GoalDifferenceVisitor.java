@@ -11,10 +11,11 @@ class GoalDifferenceVisitor implements Visitor {
 
     @Override
     public void visit(Bet bet) {
-        Integer differenceTeamOne = calculateGoalDifferenceFor(bet.getGoalsTeamOne(), bet.getMatch().getGoalsTeamOne());
-        Integer differenceTeamTwo = calculateGoalDifferenceFor(bet.getGoalsTeamTwo(), bet.getMatch().getGoalsTeamTwo());
-        Integer goalDifference = differenceTeamOne + differenceTeamTwo;
-        addForUser(bet.getUserName(), goalDifference);
+//        Integer differenceTeamOne = calculateGoalDifferenceFor(bet.getGoalsTeamOne(), bet.getMatch().getGoalsTeamOne());
+//        Integer differenceTeamTwo = calculateGoalDifferenceFor(bet.getGoalsTeamTwo(), bet.getMatch().getGoalsTeamTwo());
+//        Integer goalDifference = differenceTeamOne + differenceTeamTwo;
+//        addForUser(bet.getUserName(), goalDifference);
+    	addForUser(bet.getUserName(), 0);
     }
 
     private void addForUser(String username, Integer value) {

@@ -64,12 +64,12 @@ public class BettingService {
 
     public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker, boolean penaltyWinnerOne) {
         Bet bet = new Bet();
-        bet.setGoalsTeamOne(goalsTeamOne);
-        bet.setGoalsTeamTwo(goalsTeamTwo);
+//        bet.setGoalsTeamOne(goalsTeamOne);
+//        bet.setGoalsTeamTwo(goalsTeamTwo);
         bet.setMatch(match);
         bet.setUserName(username);
-        bet.setJoker(withJoker);
-        bet.setPenaltyWinnerOne(penaltyWinnerOne);
+//        bet.setJoker(withJoker);
+//        bet.setPenaltyWinnerOne(penaltyWinnerOne);
         return betRepository.save(bet);
     }
 
@@ -85,10 +85,17 @@ public class BettingService {
 
     public List<Match> findMatchesToBet(String username) {
         List<Bet> userBets = betRepository.findByUserName(username);
+        System.out.println(userBets);
+        
         List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
 
+        System.out.println(matchIds);
+        
         List<Match> matchesToBet = new ArrayList<>();
         List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
+        
+        System.out.println(allMatches);
+        
         for (Match match : allMatches) {
             if (!matchIds.contains(match.getId()) && match.isBettable()) {
                 matchesToBet.add(match);
@@ -104,9 +111,9 @@ public class BettingService {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
         }
 
-        if (bet.isJoker() && !jokerService.isSettingJokerAllowed(bet.getUserName(), bet.getMatch().getId())) {
-            throw new NumberOfJokersReachedException("Maximum number of jokes to use has already been reached!");
-        }
+//        if (bet.isJoker() && !jokerService.isSettingJokerAllowed(bet.getUserName(), bet.getMatch().getId())) {
+//            throw new NumberOfJokersReachedException("Maximum number of jokes to use has already been reached!");
+//        }
 
         if (StringUtils.isBlank(bet.getUserName())) {
             bet.setUserName(securityService.getCurrentUserName());
@@ -116,19 +123,35 @@ public class BettingService {
         return saved.getId();
     }
 
-    public Bet findOrCreateBetForMatch(Long matchId) {
+    public Bet createBetForMatch(Long matchId, String betType) {
         final Optional<Match> matchOpt = matchRepository.findById(matchId);
         if (matchOpt.isEmpty()) {
             return null;
         }
         final String currentUserName = securityService.getCurrentUserName();
         Match match = matchOpt.get();
-        Bet bet = betRepository.findByUserNameAndMatch(currentUserName, match);
-        if (bet == null) {
-            bet = new Bet();
-            bet.setMatch(match);
-            bet.setUserName(currentUserName);
+//        Bet bet = betRepository.findByUserNameAndMatch(currentUserName, match);
+//        if (bet == null) {
+    	Bet bet = new Bet();
+        bet.setMatch(match);
+        bet.setUserName(currentUserName);
+        
+        bet.setBetType(betType);
+        
+        switch(betType) {
+        case "win":
+        	bet.setOdds(match.getWinOdds());
+        	break;
+        case "draw":
+        	bet.setOdds(match.getDrawOdds());
+        	break;
+        case "lose":
+        	bet.setOdds(match.getLoseOdds());
+        	break;
+        	
         }
+        
+//        }
 
         return bet;
     }
@@ -228,9 +251,9 @@ public class BettingService {
         List<Match> allMatches = findMatchesToBet(username);
         allMatches.forEach(match -> {
             boolean jokerAllowed = false;
-            if (randomValueGenerator.generateRandomBoolean()) {
-                jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
-            }
+//            if (randomValueGenerator.generateRandomBoolean()) {
+//                jokerAllowed = jokerService.isSettingJokerAllowed(username, match.getId());
+//            }
             Pair<Integer, Integer> goals = Pair.of(randomFromTo(), randomFromTo());
             createAndSaveBetting(username, match, goals.getLeft(), goals.getRight(), jokerAllowed);
         });

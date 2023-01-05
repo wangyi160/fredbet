@@ -39,7 +39,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
     }
 
     @Override
-    public List<UsernamePoints> calculateRanging() {
+    public List<UsernamePoints> calculateRanking() {
         StringBuilder builder = new StringBuilder();
         builder.append("Select user_name, sum(total) as sum_all from (");
         builder.append("(Select user_name, sum(points) as total ");

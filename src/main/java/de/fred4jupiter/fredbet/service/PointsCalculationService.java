@@ -53,45 +53,49 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
         betRepository.saveAll(allBetsForThisMatch);
     }
 
-    int calculatePointsFor(Match match, Bet bet) {
+    double calculatePointsFor(Match match, Bet bet) {
         final int standardPoints = calculateStandardPointsFor(match, bet);
         final int penaltyPoints = calculatePenaltyPointsFor(match, bet);
 
         final int subtotal = standardPoints + penaltyPoints;
-        if (bet.isJoker()) {
-            return subtotal * JOKER_MULTIPLIER;
-        }
+//        if (bet.isJoker()) {
+//            return subtotal * JOKER_MULTIPLIER;
+//        }
 
         return subtotal;
     }
 
     private int calculatePenaltyPointsFor(Match match, Bet bet) {
-        if (match.isGroupMatch()) {
-            return 0;
-        }
-
-        if (match.isUndecidedResult() && bet.isUndecidedBetting()) {
-            if (match.isPenaltyWinnerOne() && bet.isPenaltyWinnerOne()) {
-                return 1;
-            }
-
-            if (!match.isPenaltyWinnerOne() && !bet.isPenaltyWinnerOne()) {
-                return 1;
-            }
-        }
+//        if (match.isGroupMatch()) {
+//            return 0;
+//        }
+//
+//        if (match.isUndecidedResult() && bet.isUndecidedBetting()) {
+//            if (match.isPenaltyWinnerOne() && bet.isPenaltyWinnerOne()) {
+//                return 1;
+//            }
+//
+//            if (!match.isPenaltyWinnerOne() && !bet.isPenaltyWinnerOne()) {
+//                return 1;
+//            }
+//        }
 
         return 0;
     }
 
     private int calculateStandardPointsFor(Match match, Bet bet) {
+    	
+    	// 比分预测完全一致
         if (isSameGoalResult(match, bet)) {
             return 3;
         }
-
+        
+        // 比分差别预测一致
         if (isSameGoalDifference(match, bet)) {
             return 2;
         }
-
+        
+        // 胜负关系一致
         if (isCorrectWinner(match, bet)) {
             return 1;
         }
@@ -99,28 +103,31 @@ public class PointsCalculationService implements ApplicationListener<MatchGoalsC
     }
 
     private boolean isCorrectWinner(Match match, Bet bet) {
-        if (!match.isGroupMatch() && match.isUndecidedResult()) {
-            // you can only get points if the penalty winner is correct and this is calculated in the other method
-            return false;
-        }
-        return (match.isTeamOneWinner() && bet.isTeamOneWinner()) || (match.isTeamTwoWinner() && bet.isTeamTwoWinner());
+//        if (!match.isGroupMatch() && match.isUndecidedResult()) {
+//            // you can only get points if the penalty winner is correct and this is calculated in the other method
+//            return false;
+//        }
+//        return (match.isTeamOneWinner() && bet.isTeamOneWinner()) || (match.isTeamTwoWinner() && bet.isTeamTwoWinner());
+        return false;
     }
 
     private boolean isSameGoalDifference(Match match, Bet bet) {
-        if (match.isTeamOneWinner() && bet.isTeamTwoWinner()) {
-            return false;
-        }
-        if (match.isTeamTwoWinner() && bet.isTeamOneWinner()) {
-            return false;
-        }
-
-        return match.getGoalDifference().intValue() == bet.getGoalDifference().intValue();
+//        if (match.isTeamOneWinner() && bet.isTeamTwoWinner()) {
+//            return false;
+//        }
+//        if (match.isTeamTwoWinner() && bet.isTeamOneWinner()) {
+//            return false;
+//        }
+//
+//        return match.getGoalDifference().intValue() == bet.getGoalDifference().intValue();
+    	return false;
     }
 
     private boolean isSameGoalResult(Match match, Bet bet) {
-        Assert.notNull(match.getGoalsTeamOne(), "no goals team one given");
-        Assert.notNull(match.getGoalsTeamTwo(), "no goals team two given");
-        return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) && match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
+//        Assert.notNull(match.getGoalsTeamOne(), "no goals team one given");
+//        Assert.notNull(match.getGoalsTeamTwo(), "no goals team two given");
+//        return match.getGoalsTeamOne().equals(bet.getGoalsTeamOne()) && match.getGoalsTeamTwo().equals(bet.getGoalsTeamTwo());
+    	return false;
     }
 
 }

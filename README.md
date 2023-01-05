@@ -180,3 +180,58 @@ The following Microsoft Excel templates with matches are prepared for import:
 |------------------------|---------------|
 | [![Publish Docker latest image](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml/badge.svg?branch=dev)](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-docker-latest.yml) | [![Publish Release](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml/badge.svg?branch=master)](https://github.com/fred4jupiter/fredbet/actions/workflows/publish-release.yml) |
 
+## 代码理解
+
+1. reset password
+admin可以充值user的密码，初始密码为fredbet
+
+
+
+## 修改计划：
+
+1. 预测比分变成odds投注
+
+1.1 match的数据结构调整
+
+数据库
+match表：增加 win,draw, lose的odds字段，作为投注的标准
+user表：增加points字段，作为资金
+
+前台
+修改matches页面的元素，增加三个odds数据，删除预测比分的部分 (DONE)
+修改bet页面元素，将预测比分修改成针对三个odds的投注数额
+修改useredit页面元素，增加points的修改 (DONE)
+
+后台
+
+domain:
+修改 AppUser, 增加points字段以及相应的get,set， (DONE)
+修改 Match, 增加winOdds, drawOdds, loseOdds以及相应的get,set， (DONE)
+
+controller:
+user edit controller: 增加修改points的功能，(DONE)
+
+service:
+
+修改points的计算公式，将预测比分增加的分数，改成投注数额的分数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

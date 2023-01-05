@@ -19,26 +19,26 @@ public class JokerService {
         this.runtimeSettingsService = runtimeSettingsService;
     }
 
-    public Joker getJokerForUser(String userName) {
-        Integer numberOfJokersUsed = betRepository.countNumberOfJokerUsed(userName);
-        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
-        return new Joker(numberOfJokersUsed, runtimeSettings.getJokerMaxCount());
-    }
+//    public Joker getJokerForUser(String userName) {
+//        Integer numberOfJokersUsed = betRepository.countNumberOfJokerUsed(userName);
+//        RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
+//        return new Joker(numberOfJokersUsed, runtimeSettings.getJokerMaxCount());
+//    }
 
-    public boolean isSettingJokerAllowed(String userName, Long matchId) {
-        Joker joker = getJokerForUser(userName);
-        if (joker.getNumberOfJokersUsed() < joker.getMax()) {
-            return true;
-        }
-
-        Bet bet = betRepository.findBetsOfGivenMatchWithJokerSet(userName, matchId);
-        if (bet != null) {
-            // This bet is one of the bets with the previous set joker. So you
-            // can edit this
-            return true;
-        }
-
-        return false;
-    }
+//    public boolean isSettingJokerAllowed(String userName, Long matchId) {
+//        Joker joker = getJokerForUser(userName);
+//        if (joker.getNumberOfJokersUsed() < joker.getMax()) {
+//            return true;
+//        }
+//
+//        Bet bet = betRepository.findBetsOfGivenMatchWithJokerSet(userName, matchId);
+//        if (bet != null) {
+//            // This bet is one of the bets with the previous set joker. So you
+//            // can edit this
+//            return true;
+//        }
+//
+//        return false;
+//    }
 
 }

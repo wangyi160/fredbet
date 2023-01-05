@@ -70,15 +70,15 @@ public class ImportExportService {
     private List<BetToExport> convertToBettings(List<Bet> bettings) {
         return bettings.stream().map(bet -> {
             BetToExport export = new BetToExport();
-            export.setJoker(bet.isJoker());
-            export.setGoalsTeamOne(bet.getGoalsTeamOne());
-            export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
+//            export.setJoker(bet.isJoker());
+//            export.setGoalsTeamOne(bet.getGoalsTeamOne());
+//            export.setGoalsTeamTwo(bet.getGoalsTeamTwo());
             if (bet.getMatch() != null) {
                 export.setMatchBusinessKey(bet.getMatch().getMatchBusinessKey());
             }
             export.setUsername(bet.getUserName());
             export.setPoints(bet.getPoints());
-            export.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
+//            export.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
             return export;
         }).collect(Collectors.toList());
     }
@@ -138,10 +138,10 @@ public class ImportExportService {
             bettingService.createAndSaveBetting(bet -> {
                 bet.setMatch(match);
                 bet.setUserName(betToExport.getUsername());
-                bet.setGoalsTeamOne(betToExport.getGoalsTeamOne());
-                bet.setGoalsTeamTwo(betToExport.getGoalsTeamTwo());
-                bet.setJoker(betToExport.isJoker());
-                bet.setPenaltyWinnerOne(betToExport.isPenaltyWinnerOne());
+//                bet.setGoalsTeamOne(betToExport.getGoalsTeamOne());
+//                bet.setGoalsTeamTwo(betToExport.getGoalsTeamTwo());
+//                bet.setJoker(betToExport.isJoker());
+//                bet.setPenaltyWinnerOne(betToExport.isPenaltyWinnerOne());
                 bet.setPoints(betToExport.getPoints());
             });
         });

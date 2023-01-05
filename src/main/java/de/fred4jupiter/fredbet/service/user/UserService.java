@@ -104,12 +104,12 @@ public class UserService {
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public AppUser updateUser(Long userId, boolean isChild) {
-        return updateUser(userId, null, isChild);
+    public AppUser updateUser(Long userId, boolean isChild, int points) {
+        return updateUser(userId, null, isChild, points);
     }
 
     @CacheEvict(cacheNames = CacheNames.CHILD_RELATION, allEntries = true)
-    public AppUser updateUser(Long userId, Set<String> roles, boolean isChild) {
+    public AppUser updateUser(Long userId, Set<String> roles, boolean isChild, int points) {
         Assert.notNull(userId, "userId must be given");
         AppUser appUser = findByUserId(userId);
         if (Validator.isNotEmpty(roles)) {
@@ -117,6 +117,8 @@ public class UserService {
         }
 
         appUser.setChild(isChild);
+        appUser.setPoints(points);
+        
         appUserRepository.save(appUser);
         return appUser;
     }

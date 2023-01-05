@@ -326,7 +326,38 @@
                     </container>
                 </configuration>
             </plugin>
+            
+            <plugin>
+				<!--start with basic information to get Liquibase plugin:
+				include <groupId>, <artifactID>, and <version> elements-->
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				
+				<configuration>
+				   <!--set values for Liquibase properties and settings
+				   for example, the location of a properties file to use-->
+				   <propertyFile>liquibase.properties</propertyFile>
+				</configuration>
+				
+			</plugin>
+            
         </plugins>
     </build>
+
+    <profiles>
+        
+        <profile>
+            <id>mysql</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>spring.profiles.active</name>
+                    <value>mysql</value>
+                </property>
+            </activation>           
+            
+        </profile>
+    </profiles>
+
 
 </project>

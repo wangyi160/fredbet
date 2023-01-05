@@ -116,9 +116,9 @@ public class MatchService {
         return this.matchRepository.fetchGroupsOfAllMatches();
     }
 
-    public List<Match> findJokerMatches(String userName) {
-        return matchRepository.findMatchesOfJokerBetsForUser(userName);
-    }
+//    public List<Match> findJokerMatches(String userName) {
+//        return matchRepository.findMatchesOfJokerBetsForUser(userName);
+//    }
 
     public List<Match> findMatchesOfToday() {
         LocalDateTime startDateTime = LocalDate.now().atStartOfDay();

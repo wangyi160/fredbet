@@ -50,7 +50,7 @@ public class BetRepositoryIT {
         createAndSaveBetForWith(userName2, 2);
         createAndSaveBetForWith(userName2, 1);
 
-        List<UsernamePoints> ranking = betRepository.calculateRanging();
+        List<UsernamePoints> ranking = betRepository.calculateRanking();
         ranking.forEach(usernamePoint -> LOG.debug("usernamePoint={}", usernamePoint));
         assertNotNull(ranking);
         assertEquals(2, ranking.size());

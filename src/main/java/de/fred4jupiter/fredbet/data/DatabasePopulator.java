@@ -138,9 +138,9 @@ public class DatabasePopulator {
         users.forEach(appUser -> {
             for (Match match : allMatches) {
                 boolean jokerAllowed = false;
-                if (randomValueGenerator.generateRandomBoolean()) {
-                    jokerAllowed = jokerService.isSettingJokerAllowed(appUser.getUsername(), match.getId());
-                }
+//                if (randomValueGenerator.generateRandomBoolean()) {
+//                    jokerAllowed = jokerService.isSettingJokerAllowed(appUser.getUsername(), match.getId());
+//                }
                 createBetForUser(appUser, match, jokerAllowed);
             }
 

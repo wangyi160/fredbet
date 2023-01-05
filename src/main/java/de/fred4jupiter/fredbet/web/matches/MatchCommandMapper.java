@@ -46,10 +46,10 @@ public class MatchCommandMapper {
         return toMatchCommandsWithBets(currentUserName, allMatches);
     }
 
-    public List<MatchCommand> findJokerMatches(String currentUserName) {
-        List<Match> allMatches = matchService.findJokerMatches(currentUserName);
-        return toMatchCommandsWithBets(currentUserName, allMatches);
-    }
+//    public List<MatchCommand> findJokerMatches(String currentUserName) {
+//        List<Match> allMatches = matchService.findJokerMatches(currentUserName);
+//        return toMatchCommandsWithBets(currentUserName, allMatches);
+//    }
 
     public List<MatchCommand> findMatchesOfToday(String currentUserName) {
         List<Match> allMatches = matchService.findMatchesOfToday();
@@ -74,7 +74,12 @@ public class MatchCommandMapper {
         matchCommand.setKickOffDate(match.getKickOffDate());
         matchCommand.setStadium(match.getStadium());
         matchCommand.setGroup(match.getGroup());
-        matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
+        
+        matchCommand.setWinOdds(match.getWinOdds());
+        matchCommand.setDrawOdds(match.getDrawOdds());
+        matchCommand.setLoseOdds(match.getLoseOdds());
+        
+//        matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
         return matchCommand;
     }
 
@@ -100,18 +105,18 @@ public class MatchCommandMapper {
     }
 
     private List<MatchCommand> toMatchCommandsWithBets(String username, List<Match> allMatches) {
-        final Map<Long, Bet> matchToBetMap = findBetsForMatchIds(username);
+//        final Map<Long, Bet> matchToBetMap = findBetsForMatchIds(username);
         final List<MatchCommand> resultList = new ArrayList<>();
         for (Match match : allMatches) {
             MatchCommand matchCommand = toMatchCommand(match);
-            Bet bet = matchToBetMap.get(match.getId());
-            if (bet != null) {
-                matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
-                matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
-                matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
-                matchCommand.setPoints(bet.getPoints());
-                matchCommand.setJoker(bet.isJoker());
-            }
+//            Bet bet = matchToBetMap.get(match.getId());
+//            if (bet != null) {
+//                matchCommand.setUserBetGoalsTeamOne(bet.getGoalsTeamOne());
+//                matchCommand.setUserBetGoalsTeamTwo(bet.getGoalsTeamTwo());
+//                matchCommand.setPenaltyWinnerOneBet(bet.isPenaltyWinnerOne());
+//                matchCommand.setPoints(bet.getPoints());
+//                matchCommand.setJoker(bet.isJoker());
+//            }
             resultList.add(matchCommand);
         }
         return resultList;

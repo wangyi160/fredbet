@@ -94,6 +94,10 @@ public class UserController {
         userCommand.setUsername(appUser.getUsername());
         userCommand.setDeletable(appUser.isDeletable());
         userCommand.setChild(appUser.isChild());
+        
+        // 增加points
+        userCommand.setPoints(appUser.getPoints());
+        
         if (!CollectionUtils.isEmpty(appUser.getAuthorities())) {
             for (GrantedAuthority grantedAuthority : appUser.getAuthorities()) {
                 userCommand.addRole(grantedAuthority.getAuthority());
@@ -110,10 +114,10 @@ public class UserController {
         }
 
         if (webSecurityUtil.isRoleSelectionDisabledForUser(editUserCommand.getUsername())) {
-            LOG.debug("Role selection is disabled for user {}. Do not update roles.", editUserCommand.getUsername());
-            userService.updateUser(editUserCommand.getUserId(), editUserCommand.isChild());
+            LOG.debug("Role selection is disabled for user {}. Will not update roles.", editUserCommand.getUsername());
+            userService.updateUser(editUserCommand.getUserId(), editUserCommand.isChild(), editUserCommand.getPoints());
         } else {
-            userService.updateUser(editUserCommand.getUserId(), editUserCommand.getRoles(), editUserCommand.isChild());
+            userService.updateUser(editUserCommand.getUserId(), editUserCommand.getRoles(), editUserCommand.isChild(), editUserCommand.getPoints());
         }
 
         webMessageUtil.addInfoMsg(redirect, "user.edited", editUserCommand.getUsername());
@@ -186,3 +190,21 @@ public class UserController {
         return REDIRECT_USER_PAGE;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

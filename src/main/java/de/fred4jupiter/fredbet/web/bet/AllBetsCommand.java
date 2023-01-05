@@ -49,16 +49,18 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 	}
 
 	public GroupAvg getAvgGroupBet() {
-		double teamOne = 0.0;
-		double teamTwo = 0.0;
-		if (Validator.isEmpty(allBetsForMatch)) {
-			return new GroupAvg(teamOne, teamTwo);
-		}
-
-		for (Bet bet : allBetsForMatch) {
-			teamOne = teamOne + bet.getGoalsTeamOne();
-			teamTwo = teamTwo + bet.getGoalsTeamTwo();
-		}
-		return new GroupAvg(teamOne / allBetsForMatch.size(), teamTwo / allBetsForMatch.size());
+//		double teamOne = 0.0;
+//		double teamTwo = 0.0;
+//		if (Validator.isEmpty(allBetsForMatch)) {
+//			return new GroupAvg(teamOne, teamTwo);
+//		}
+//
+//		for (Bet bet : allBetsForMatch) {
+//			teamOne = teamOne + bet.getGoalsTeamOne();
+//			teamTwo = teamTwo + bet.getGoalsTeamTwo();
+//		}
+//		return new GroupAvg(teamOne / allBetsForMatch.size(), teamTwo / allBetsForMatch.size());
+		
+		return new GroupAvg(0.0, 0.0);
 	}
 }

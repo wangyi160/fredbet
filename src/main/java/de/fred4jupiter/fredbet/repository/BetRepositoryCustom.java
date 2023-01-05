@@ -5,7 +5,7 @@ import java.util.Map;
 
 interface BetRepositoryCustom {
 
-    List<UsernamePoints> calculateRanging();
+    List<UsernamePoints> calculateRanking();
 
     Map<Long, PointCourseResultSimple> fetchPointCourseResultSimple();
 }

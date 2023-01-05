@@ -12,13 +12,13 @@ public class BetCommand {
 
     private Long matchId;
 
-    @NotNull
-    @Min(value = 0)
-    private Integer goalsTeamOne;
-
-    @NotNull
-    @Min(value = 0)
-    private Integer goalsTeamTwo;
+//    @NotNull
+//    @Min(value = 0)
+//    private Integer goalsTeamOne;
+//
+//    @NotNull
+//    @Min(value = 0)
+//    private Integer goalsTeamTwo;
 
     private String redirectViewName;
 
@@ -34,14 +34,19 @@ public class BetCommand {
 
     private String iconPathTeamTwo;
 
-    private boolean useJoker;
-    private Integer numberOfJokersUsed;
+//    private boolean useJoker;
+//    private Integer numberOfJokersUsed;
 
     /*
      * maximum jokers allowed to use (general setting)
      */
-    private Integer maxJokers;
-    private boolean jokerEditable;
+//    private Integer maxJokers;
+//    private boolean jokerEditable;
+    
+    private String betType;
+    private double odds;
+    private Double points;
+    
 
     public String getBackUrl() {
         String view = RedirectViewName.resolveBackUrl(redirectViewName);
@@ -53,8 +58,8 @@ public class BetCommand {
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE);
         builder.append("matchId", matchId);
         builder.append("betId", betId);
-        builder.append("goalsTeamOne", goalsTeamOne);
-        builder.append("goalsTeamTwo", goalsTeamTwo);
+//        builder.append("goalsTeamOne", goalsTeamOne);
+//        builder.append("goalsTeamTwo", goalsTeamTwo);
         builder.append("redirectViewName", redirectViewName);
         builder.append("teamNameOne", teamNameOne);
         builder.append("teamNameTwo", teamNameTwo);
@@ -62,7 +67,7 @@ public class BetCommand {
         builder.append("penaltyWinnerOne", penaltyWinnerOne);
         builder.append("iconPathTeamOne", iconPathTeamOne);
         builder.append("iconPathTeamTwo", iconPathTeamTwo);
-        builder.append("useJoker", useJoker);
+//        builder.append("useJoker", useJoker);
         return builder.toString();
     }
 
@@ -74,21 +79,21 @@ public class BetCommand {
         return teamNameTwo;
     }
 
-    public Integer getGoalsTeamOne() {
-        return goalsTeamOne;
-    }
-
-    public void setGoalsTeamOne(Integer goalsTeamOne) {
-        this.goalsTeamOne = goalsTeamOne;
-    }
-
-    public Integer getGoalsTeamTwo() {
-        return goalsTeamTwo;
-    }
-
-    public void setGoalsTeamTwo(Integer goalsTeamTwo) {
-        this.goalsTeamTwo = goalsTeamTwo;
-    }
+//    public Integer getGoalsTeamOne() {
+//        return goalsTeamOne;
+//    }
+//
+//    public void setGoalsTeamOne(Integer goalsTeamOne) {
+//        this.goalsTeamOne = goalsTeamOne;
+//    }
+//
+//    public Integer getGoalsTeamTwo() {
+//        return goalsTeamTwo;
+//    }
+//
+//    public void setGoalsTeamTwo(Integer goalsTeamTwo) {
+//        this.goalsTeamTwo = goalsTeamTwo;
+//    }
 
     public Long getBetId() {
         return betId;
@@ -155,36 +160,62 @@ public class BetCommand {
         this.iconPathTeamTwo = iconPathTeamTwo;
     }
 
-    public boolean isUseJoker() {
-        return useJoker;
-    }
+	public String getBetType() {
+		return betType;
+	}
 
-    public void setUseJoker(boolean useJoker) {
-        this.useJoker = useJoker;
-    }
+	public void setBetType(String betType) {
+		this.betType = betType;
+	}
 
-    public Integer getNumberOfJokersUsed() {
-        return numberOfJokersUsed;
-    }
+	public double getOdds() {
+		return odds;
+	}
 
-    public void setNumberOfJokersUsed(Integer numberOfJokersUsed) {
-        this.numberOfJokersUsed = numberOfJokersUsed;
-    }
+	public void setOdds(double odds) {
+		this.odds = odds;
+	}
 
-    public Integer getMaxJokers() {
-        return maxJokers;
-    }
+	public Double getPoints() {
+		return points;
+	}
 
-    public void setMaxJokers(Integer maxJokers) {
-        this.maxJokers = maxJokers;
-    }
+	public void setPoints(Double points) {
+		this.points = points;
+	}
 
-    public boolean isJokerEditable() {
-        return jokerEditable;
-    }
+//    public boolean isUseJoker() {
+//        return useJoker;
+//    }
+//
+//    public void setUseJoker(boolean useJoker) {
+//        this.useJoker = useJoker;
+//    }
+//
+//    public Integer getNumberOfJokersUsed() {
+//        return numberOfJokersUsed;
+//    }
+//
+//    public void setNumberOfJokersUsed(Integer numberOfJokersUsed) {
+//        this.numberOfJokersUsed = numberOfJokersUsed;
+//    }
 
-    public void setJokerEditable(boolean jokerEditable) {
-        this.jokerEditable = jokerEditable;
-    }
+//    public Integer getMaxJokers() {
+//        return maxJokers;
+//    }
+//
+//    public void setMaxJokers(Integer maxJokers) {
+//        this.maxJokers = maxJokers;
+//    }
+//
+//    public boolean isJokerEditable() {
+//        return jokerEditable;
+//    }
+//
+//    public void setJokerEditable(boolean jokerEditable) {
+//        this.jokerEditable = jokerEditable;
+//    }
+    
+    
 
 }

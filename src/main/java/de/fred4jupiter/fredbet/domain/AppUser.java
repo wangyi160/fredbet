@@ -59,6 +59,9 @@ public class AppUser implements UserDetails {
 
     @Column(name = "FIRST_LOGIN")
     private boolean firstLogin;
+    
+    @Column(name = "POINTS")
+    private int points;
 
     @PersistenceCreator
     protected AppUser() {
@@ -247,5 +250,14 @@ public class AppUser implements UserDetails {
         this.firstLogin = firstLogin;
     }
 
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+
+    
 
 }

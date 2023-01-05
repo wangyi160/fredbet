@@ -52,6 +52,16 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     @Column(name = "STADIUM")
     private String stadium;
+    
+    @Column(name = "WIN_ODDS")
+    private double winOdds;
+    
+    @Column(name = "DRAW_ODDS")
+    private double drawOdds;
+    
+    @Column(name = "LOSE_ODDS")
+    private double loseOdds;
+    
 
     public boolean hasCountriesSet() {
         return teamOne.hasCountrySet() && teamTwo.hasCountrySet();
@@ -307,4 +317,32 @@ public class Match implements MatchResult, MatchBusinessKey {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return String.format("match_%s_%s_%s_%s", this.teamOne.getBusinessKey(), this.teamTwo.getBusinessKey(), this.group, formatter.format(this.kickOffDate));
     }
+
+	public double getWinOdds() {
+		return winOdds;
+	}
+
+	public void setWinOdds(double winOdds) {
+		this.winOdds = winOdds;
+	}
+
+	public double getDrawOdds() {
+		return drawOdds;
+	}
+
+	public void setDrawOdds(double drawOdds) {
+		this.drawOdds = drawOdds;
+	}
+
+	public double getLoseOdds() {
+		return loseOdds;
+	}
+
+	public void setLoseOdds(double loseOdds) {
+		this.loseOdds = loseOdds;
+	}
+    
+    
+    
+    
 }

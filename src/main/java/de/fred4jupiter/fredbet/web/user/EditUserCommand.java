@@ -23,6 +23,10 @@ public class EditUserCommand {
 	private Set<String> roles = new HashSet<>();
 
 	private boolean child;
+	
+	// 增加points
+	private int points;
+	
 
 	public Set<String> getRoles() {
 		return roles;
@@ -75,5 +79,15 @@ public class EditUserCommand {
 	public void setChild(boolean child) {
 		this.child = child;
 	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
+	}
+	
+	
 
 }

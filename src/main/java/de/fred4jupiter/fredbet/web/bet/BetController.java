@@ -71,9 +71,9 @@ public class BetController {
             messageUtil.addInfoMsg(model, "msg.bet.betting.info.allBetted");
         }
 
-        if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName()) && !bettingService.hasFirstMatchStarted()) {
-            messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
-        }
+//        if (bettingService.hasOpenExtraBet(securityService.getCurrentUserName()) && !bettingService.hasFirstMatchStarted()) {
+//            messageUtil.addWarnMsg(model, "msg.bet.betting.warn.extraBetOpen");
+//        }
 
         List<MatchCommand> matchCommands = matchesToBet.stream().map(matchCommandMapper::toMatchCommand)
                 .collect(Collectors.toList());
@@ -81,9 +81,10 @@ public class BetController {
         return VIEW_LIST_OPEN;
     }
 
-    @GetMapping("/createOrUpdate/{matchId}")
-    public String showBet(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, Model model) {
-        Bet bet = bettingService.findOrCreateBetForMatch(matchId);
+    @GetMapping("/createOrUpdate/{matchId}/{betType}")
+    public String showBet(@PathVariable("matchId") Long matchId,  @PathVariable("betType") String betType,
+    		@RequestParam(required = false) String redirectViewName, Model model) {
+        Bet bet = bettingService.createBetForMatch(matchId, betType);
         if (bet == null) {
             return "redirect:/matches";
         }
@@ -106,9 +107,9 @@ public class BetController {
         BetCommand betCommand = new BetCommand();
         betCommand.setBetId(bet.getId());
         betCommand.setMatchId(bet.getMatch().getId());
-        betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
-        betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-        betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
+//        betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
+//        betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
+//        betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
 
         final Locale locale = LocaleContextHolder.getLocale();
         final Team teamOne = bet.getMatch().getTeamOne();
@@ -120,12 +121,15 @@ public class BetController {
 
         betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
 
-        Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
-        betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
-        betCommand.setMaxJokers(joker.getMax());
-        betCommand.setUseJoker(bet.isJoker());
-        betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
+//        Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
+//        betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
+//        betCommand.setMaxJokers(joker.getMax());
+//        betCommand.setUseJoker(bet.isJoker());
+//        betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
 
+        betCommand.setBetType(bet.getBetType());
+        betCommand.setOdds(bet.getOdds());
+        
         return betCommand;
     }
 
@@ -153,19 +157,26 @@ public class BetController {
             bet = new Bet();
             bet.setMatch(match);
             bet.setUserName(securityService.getCurrentUserName());
+            
+            bet.setPoints(betCommand.getPoints());
+            bet.setBetType(betCommand.getBetType());
+            bet.setOdds(betCommand.getOdds());
+            
         } else {
             bet = bettingService.findBetById(betCommand.getBetId());
         }
 
-        bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
-        bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
-        bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
-        bet.setJoker(betCommand.isUseJoker());
+//        bet.setGoalsTeamOne(betCommand.getGoalsTeamOne());
+//        bet.setGoalsTeamTwo(betCommand.getGoalsTeamTwo());
+//        bet.setPenaltyWinnerOne(betCommand.isPenaltyWinnerOne());
+//        bet.setJoker(betCommand.isUseJoker());
         return bet;
     }
 
     @GetMapping("/others/match/{matchId}")
-    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId, @RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
+    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId,
+    		@RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
+    	
         AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
         if (allBetsCommand == null) {
             return new ModelAndView("redirect:/matches");
@@ -176,5 +187,23 @@ public class BetController {
 
         allBetsCommand.setRedirectViewName(redirectViewName);
         return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
+        
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

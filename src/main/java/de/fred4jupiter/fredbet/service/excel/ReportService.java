@@ -93,11 +93,11 @@ public class ReportService {
                 }
 
                 if (withBets) {
-                    row.add("" + bet.getGoalsTeamOne());
-                    row.add("" + bet.getGoalsTeamTwo());
+//                    row.add("" + bet.getGoalsTeamOne());
+//                    row.add("" + bet.getGoalsTeamTwo());
                 }
 
-                row.add(jokerYesNoLocalized(bet.isJoker(), locale));
+//                row.add(jokerYesNoLocalized(bet.isJoker(), locale));
                 row.add("" + bet.getPoints());
             }
         });

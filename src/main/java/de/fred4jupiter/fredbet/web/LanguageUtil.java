@@ -1,5 +1,7 @@
 package de.fred4jupiter.fredbet.web;
 
+import java.util.Locale;
+
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +13,9 @@ public class LanguageUtil {
 	private static final String LANGUAGE_ICON_BASE_PATH = "/images/lang/";
 
 	public String getCurrentUserLanguage() {
-		return LocaleContextHolder.getLocale().getLanguage();
+			
+//		return LocaleContextHolder.getLocale().getLanguage();
+		return Locale.getDefault().getLanguage();
 	}
 
 	public String getImageLanguageIconPath() {

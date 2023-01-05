@@ -43,7 +43,7 @@ public class RankingService {
     }
 
     public List<UsernamePoints> calculateCurrentRanking(RankingSelection rankingSelection) {
-        final List<UsernamePoints> rankings = betRepository.calculateRanging();
+        final List<UsernamePoints> rankings = betRepository.calculateRanking();
 
         calculateAdditionalMetricsForRanking(rankings);
 

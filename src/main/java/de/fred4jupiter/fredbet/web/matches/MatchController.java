@@ -58,14 +58,14 @@ public class MatchController {
         return VIEW_LIST_MATCHES;
     }
 
-    @GetMapping("/joker")
-    public String jokerMatches(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findJokerMatches(securityBean.getCurrentUserName());
-        model.addAttribute("allMatches", matches);
-        model.addAttribute("heading", messageUtil.getMessageFor("joker.matches"));
-        model.addAttribute("redirectViewName", RedirectViewName.MATCHES_JOKER);
-        return VIEW_LIST_MATCHES;
-    }
+//    @GetMapping("/joker")
+//    public String jokerMatches(Model model) {
+//        List<MatchCommand> matches = matchCommandMapper.findJokerMatches(securityBean.getCurrentUserName());
+//        model.addAttribute("allMatches", matches);
+//        model.addAttribute("heading", messageUtil.getMessageFor("joker.matches"));
+//        model.addAttribute("redirectViewName", RedirectViewName.MATCHES_JOKER);
+//        return VIEW_LIST_MATCHES;
+//    }
 
     @GetMapping("/today")
     public String matchesOfToday(Model model) {

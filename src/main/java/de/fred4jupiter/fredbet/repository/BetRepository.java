@@ -29,13 +29,13 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
 	@Query("update Bet b set b.userName = :newUsername where b.userName = :oldUsername")
 	void renameUser(@Param("oldUsername") String oldUsername, @Param("newUsername") String newUsername);
 
-	@Query("select count(joker) from Bet where joker = true and userName = :userName")
-	Integer countNumberOfJokerUsed(@Param("userName") String userName);
+//	@Query("select count(joker) from Bet where joker = true and userName = :userName")
+//	Integer countNumberOfJokerUsed(@Param("userName") String userName);
 
-	@Query("select b from Bet b where joker = true and userName = :userName and b.match.id = :matchId")
-	Bet findBetsOfGivenMatchWithJokerSet(@Param("userName") String username, @Param("matchId") Long matchId);
+//	@Query("select b from Bet b where joker = true and userName = :userName and b.match.id = :matchId")
+//	Bet findBetsOfGivenMatchWithJokerSet(@Param("userName") String username, @Param("matchId") Long matchId);
 
-	@Query("Select b from Bet b LEFT JOIN FETCH b.match where b.goalsTeamOne is not null and b.goalsTeamTwo is not null and b.match.teamOne.goals is not null and b.match.teamTwo.goals is not null")
+	@Query("Select b from Bet b LEFT JOIN FETCH b.match where b.match.teamOne.goals is not null and b.match.teamTwo.goals is not null")
 	List<Bet> findAllBetsWithMatches();
 
 	@Query("select new de.fred4jupiter.fredbet.repository.PointCourseResult(b.userName, b.points, b.match) from Bet b where b.userName in :usernames order by b.match.kickOffDate asc")

@@ -10,7 +10,7 @@ class BetToExport {
 
     private Integer goalsTeamTwo;
 
-    private Integer points;
+    private Double points;
 
     private boolean penaltyWinnerOne;
 
@@ -48,11 +48,11 @@ class BetToExport {
         this.goalsTeamTwo = goalsTeamTwo;
     }
 
-    public Integer getPoints() {
+    public Double getPoints() {
         return points;
     }
 
-    public void setPoints(Integer points) {
+    public void setPoints(Double points) {
         this.points = points;
     }
 
