@@ -34,8 +34,8 @@
 				        		<span th:text="#{matches.title}" th:remove="tag">Spiele</span>			        		
 				        		<span class="caret"></span>
 				        	</a>
-					        <ul class="dropdown-menu">
-								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" th:class="${pageState_matches_finishednoresult}">
+					        <ul class="dropdown-menu"  >
+								<li  sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" th:class="${pageState_matches_finishednoresult}">
 									<a href="#matchesFinishednoresult" th:href="@{/matches/finishednoresult}" th:text="#{finishednoresult.matches}"></a>
 								</li>
 								<li sec:authorize="hasAnyAuthority('PERM_EDIT_MATCH_RESULT')" class="divider" role="separator"></li>
@@ -44,60 +44,18 @@
                                 <li th:class="${pageState_matches_today}"><a href="#matchesToday" th:href="@{/matches/today}" th:text="#{today.matches}"></a></li>
                                 <li class="divider" role="separator"></li>
 								<li th:class="${pageState_matches}"><a href="#matches" th:href="@{/matches}" th:text="#{all.matches}"></a></li>
-								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" class="divider" role="separator"></li>
-								<li th:if="${@groupAvailabilityUtil.isJokerBettingActive()}" th:class="${pageState_matches_joker}">
-					            	<a href="#matches" th:href="@{/matches/joker}" th:text="#{joker.matches}"></a>
-				            	</li>
+								
 								<li class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_A')}" th:class="${pageState_matches_group_GROUP_A}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_A}" th:text="#{group} + ' A'"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_B')}" th:class="${pageState_matches_group_GROUP_B}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_B}" th:text="#{group} + ' B'"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_C')}" th:class="${pageState_matches_group_GROUP_C}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_C}" th:text="#{group} + ' C'"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_D')}" th:class="${pageState_matches_group_GROUP_D}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_D}" th:text="#{group} + ' D'"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_E')}" th:class="${pageState_matches_group_GROUP_E}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_E}" th:text="#{group} + ' E'"></a>
-					            </li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_F')}" th:class="${pageState_matches_group_GROUP_F}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_F}" th:text="#{group} + ' F'"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_G')}" th:class="${pageState_matches_group_GROUP_G}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_G}" th:text="#{group} + ' G'"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_H')}" th:class="${pageState_matches_group_GROUP_H}">
-					            	<a href="#matches" th:href="@{/matches/group/GROUP_H}" th:text="#{group} + ' H'"></a>
-				            	</li>
-								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_I')}" th:class="${pageState_matches_group_GROUP_I}">
-									<a href="#matches" th:href="@{/matches/group/GROUP_I}" th:text="#{group} + ' I'"></a>
+								
+								<li th:each="group,iter : ${groups}" th:if="${@groupAvailabilityUtil.isGroupAvailable(group.getName())}" th:class="${pageState_matches_group_GROUP_A}">
+									<a href="#matches" th:href="${'/matches/group/' + group.getUrl()}" th:text="${group.getName}"></a>
 								</li>
-								<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GROUP_J')}" th:class="${pageState_matches_group_GROUP_J}">
-									<a href="#matches" th:href="@{/matches/group/GROUP_J}" th:text="#{group} + ' J'"></a>
-								</li>
-					            <li th:if="${@groupAvailabilityUtil.isKnockOutMatchesAvailable()}" class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('ROUND_OF_SIXTEEN')}" th:class="${pageState_matches_group_ROUND_OF_SIXTEEN}">
-					            	<a href="#matches" th:href="@{/matches/group/ROUND_OF_SIXTEEN}" th:text="#{group.entry.ROUND_OF_SIXTEEN}"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('QUARTER_FINAL')}" th:class="${pageState_matches_group_QUARTER_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/QUARTER_FINAL}" th:text="#{group.entry.QUARTER_FINAL}"></a>
-				            	</li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('SEMI_FINAL')}" th:class="${pageState_matches_group_SEMI_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/SEMI_FINAL}" th:text="#{group.entry.SEMI_FINAL}"></a>
-				            	</li>
-				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('GAME_FOR_THIRD')}" th:class="${pageState_matches_group_GAME_FOR_THIRD}">
-					            	<a href="#matches" th:href="@{/matches/group/GAME_FOR_THIRD}" th:text="#{group.entry.GAME_FOR_THIRD}"></a>
-				            	</li>
-				            	<li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" class="divider" role="separator"></li>
-					            <li th:if="${@groupAvailabilityUtil.isGroupAvailable('FINAL')}" th:class="${pageState_matches_group_FINAL}">
-					            	<a href="#matches" th:href="@{/matches/group/FINAL}" th:text="#{group.entry.FINAL}"></a>
-				            	</li>				            	
+									
+								
+					            	            	
 					        </ul>
+
+							
 				        </li>
 				        <li class="dropdown" th:classappend="${pageState_info}">
 				        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -169,6 +127,9 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<div th:replace="~{fragments/language_selector :: language_selector('dropdown-toggle')}"></div>
+	                    </li>
+						<li >
+							<a  th:text="${@webSecurityUtil.getUserPoints() + ' Points'}"></a>
 	                    </li>
 						<li class="dropdown" th:classappend="${pageState_profile}">
 							<a href="#" th:inline="text" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

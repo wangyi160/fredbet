@@ -36,10 +36,10 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
     public void onApplicationEvent(MatchGoalsChangedEvent event) {
         final Match match = event.getMatch();
 
-        if (!match.isFinal() && !match.isGroup(Group.GAME_FOR_THIRD)) {
-            LOG.debug("Match is not final or game of third. So no extra points to calculate for...");
-            return;
-        }
+//        if (!match.isFinal() && !match.isGroup(Group.GAME_FOR_THIRD)) {
+//            LOG.debug("Match is not final or game of third. So no extra points to calculate for...");
+//            return;
+//        }
 
         final RuntimeSettings runtimeSettings = runtimeSettingsService.loadRuntimeSettings();
 
@@ -64,13 +64,13 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
             return;
         }
 
-        if (match.isGroup(Group.GAME_FOR_THIRD)) {
-            Integer pointsGameOfThird = calculatePointsGameOfThird(match, extraBet, runtimeSettings);
-            LOG.debug("User {} reached extra bets: pointsGameOfThird={}", extraBet.getUserName(), pointsGameOfThird);
-
-            extraBet.setPointsThree(pointsGameOfThird);
-            extraBetRepository.save(extraBet);
-        }
+//        if (match.isGroup(Group.GAME_FOR_THIRD)) {
+//            Integer pointsGameOfThird = calculatePointsGameOfThird(match, extraBet, runtimeSettings);
+//            LOG.debug("User {} reached extra bets: pointsGameOfThird={}", extraBet.getUserName(), pointsGameOfThird);
+//
+//            extraBet.setPointsThree(pointsGameOfThird);
+//            extraBetRepository.save(extraBet);
+//        }
     }
 
     private Integer calculatePointsFinal(Match match, ExtraBet extraBet, RuntimeSettings runtimeSettings) {
@@ -106,9 +106,9 @@ public class ExtraPointsCalculationService implements ApplicationListener<MatchG
     }
 
     private Integer calculatePointsGameOfThird(Match match, ExtraBet extraBet, RuntimeSettings runtimeSettings) {
-        if (!match.isGroup(Group.GAME_FOR_THIRD)) {
-            return 0;
-        }
+//        if (!match.isGroup(Group.GAME_FOR_THIRD)) {
+//            return 0;
+//        }
 
         if (!match.hasResultSet()) {
             return 0;

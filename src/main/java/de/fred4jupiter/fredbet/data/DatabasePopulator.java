@@ -99,20 +99,20 @@ public class DatabasePopulator {
 
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(1);
 
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_A, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_B, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_C, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_D, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_E, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_F, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_G, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_H, 4);
-
-        localDateTime = createRandomForGroup(localDateTime, Group.ROUND_OF_SIXTEEN, 8);
-        localDateTime = createRandomForGroup(localDateTime, Group.QUARTER_FINAL, 4);
-        localDateTime = createRandomForGroup(localDateTime, Group.SEMI_FINAL, 2);
-        localDateTime = createRandomForGroup(localDateTime, Group.FINAL, 1);
-        createRandomForGroup(localDateTime, Group.GAME_FOR_THIRD, 1);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_A, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_B, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_C, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_D, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_E, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_F, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_G, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.GROUP_H, 4);
+//
+//        localDateTime = createRandomForGroup(localDateTime, Group.ROUND_OF_SIXTEEN, 8);
+//        localDateTime = createRandomForGroup(localDateTime, Group.QUARTER_FINAL, 4);
+//        localDateTime = createRandomForGroup(localDateTime, Group.SEMI_FINAL, 2);
+//        localDateTime = createRandomForGroup(localDateTime, Group.FINAL, 1);
+//        createRandomForGroup(localDateTime, Group.GAME_FOR_THIRD, 1);
     }
 
     private LocalDateTime createRandomForGroup(LocalDateTime localDateTime, Group group, int numberOfMatches) {

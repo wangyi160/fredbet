@@ -51,7 +51,8 @@ public class IcsCalendarService {
     }
 
     private String createContent(Match match, Locale locale) {
-        return messageSourceUtil.getMessageFor(match.getGroup().getTitleMsgKey(), locale);
+//        return messageSourceUtil.getMessageFor(match.getGroup().getTitleMsgKey(), locale);
+    	return match.getGroup().getName();
     }
 
     private String createTitle(Match match, Locale locale) {

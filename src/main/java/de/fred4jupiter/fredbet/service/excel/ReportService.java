@@ -42,14 +42,14 @@ public class ReportService {
     }
 
     public byte[] exportBetsToExcel(final Locale locale) {
-        List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
-        if (Validator.isNotEmpty(finalMatches)) {
-            // there should be only one final match (ignoring if more)
-            Match match = finalMatches.get(0);
-            if (match.hasResultSet()) {
-                return exportBetsToExcel(locale, true);
-            }
-        }
+//        List<Match> finalMatches = matchRepository.findByGroup(Group.FINAL);
+//        if (Validator.isNotEmpty(finalMatches)) {
+//            // there should be only one final match (ignoring if more)
+//            Match match = finalMatches.get(0);
+//            if (match.hasResultSet()) {
+//                return exportBetsToExcel(locale, true);
+//            }
+//        }
 
         return exportBetsToExcel(locale, false);
     }
@@ -143,8 +143,8 @@ public class ReportService {
         }
     }
 
-    public MultiValuedMap<Integer, PointCountResult> reportPointsFrequency() {
-        MultiValuedMap<Integer, PointCountResult> map = new ArrayListValuedHashMap<>();
+    public MultiValuedMap<Double, PointCountResult> reportPointsFrequency() {
+        MultiValuedMap<Double, PointCountResult> map = new ArrayListValuedHashMap<>();
 
         final List<PointCountResult> resultList = this.betRepository.countNumberOfPointsByUser();
         for (PointCountResult pointCountResult : resultList) {

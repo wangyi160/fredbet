@@ -1,8 +1,12 @@
 package de.fred4jupiter.fredbet.web;
 
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.repository.GroupRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +21,12 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
     private static final String CSS_ACTIVE = "active";
 
     private static final String PAGE_STATE_REFIX = "pageState_";
+
+    private List<Group> groups;
+
+    public ActivePageHandlerInterceptor(List<Group> groups) {
+        this.groups = groups;
+    }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView)
@@ -33,6 +43,9 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
         final String page = StringUtils.substring(requestURI, 1);
         final String replaced = StringUtils.replace(page, "/", "_");
         modelAndView.addObject(PAGE_STATE_REFIX + replaced, CSS_ACTIVE);
+
+        // add top navigation items with groups
+        modelAndView.addObject("groups", groups);
 
         // add top navigation items with submenus
 
@@ -65,20 +78,20 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
     }
 
     private boolean containsMainGroups(String requestURI) {
-        for (Group group : Group.getMainGroups()) {
-            if (requestURI.contains(group.getName())) {
-                return true;
-            }
-        }
+//        for (Group group : Group.getMainGroups()) {
+//            if (requestURI.contains(group.getName())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 
     private boolean containsFinalGroups(String requestURI) {
-        for (Group group : Group.getFinalGroups()) {
-            if (requestURI.contains(group.getName())) {
-                return true;
-            }
-        }
+//        for (Group group : Group.getFinalGroups()) {
+//            if (requestURI.contains(group.getName())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

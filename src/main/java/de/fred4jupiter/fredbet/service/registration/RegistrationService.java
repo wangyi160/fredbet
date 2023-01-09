@@ -44,7 +44,8 @@ public class RegistrationService {
         AppUserBuilder builder = AppUserBuilder.create()
                 .withUsernameAndPassword(username, newPassword)
                 .withUserGroup(FredBetUserGroup.ROLE_USER)
-                .withIsChild(child);
+                .withIsChild(child)
+                .withPoints(0.0);
 
         userService.createUser(builder.build());
     }

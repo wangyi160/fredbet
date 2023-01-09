@@ -47,6 +47,11 @@ public class AppUserBuilder {
         this.appUser.setChild(isChild);
         return this;
     }
+    
+    public AppUserBuilder withPoints(Double points) {
+        this.appUser.setPoints(points);
+        return this;
+    }
 
     public AppUserBuilder withUserGroup(FredBetUserGroup fredBetUserGroup) {
         this.appUser.addUserGroup(fredBetUserGroup);

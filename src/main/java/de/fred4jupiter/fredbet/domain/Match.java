@@ -39,9 +39,11 @@ public class Match implements MatchResult, MatchBusinessKey {
     })
     private Team teamTwo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "MATCH_GROUP")
+    // @Enumerated(EnumType.STRING)
+    @ManyToOne(targetEntity = Group.class)
+    @JoinColumn(name = "MATCH_GROUP")
     private Group group;
+
 
     @Column(name = "PENALTY_WINNER_ONE")
     private boolean penaltyWinnerOne;
@@ -250,7 +252,8 @@ public class Match implements MatchResult, MatchBusinessKey {
     }
 
     public boolean isFinal() {
-        return isGroup(Group.FINAL);
+//        return isGroup(Group.FINAL);
+        return false;
     }
 
     public boolean isPenaltyWinnerOne() {
@@ -262,7 +265,8 @@ public class Match implements MatchResult, MatchBusinessKey {
     }
 
     public boolean isGroupMatch() {
-        return this.group.name().startsWith("GROUP");
+//        return this.group.name().startsWith("GROUP");
+        return true;
     }
 
     public String getCssClassPenaltyWinnerOne() {

@@ -9,6 +9,7 @@ import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.JokerService;
 import de.fred4jupiter.fredbet.service.MatchService;
 import de.fred4jupiter.fredbet.service.NoBettingAfterMatchStartedAllowedException;
+import de.fred4jupiter.fredbet.service.NotEnoughPointsException;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
 import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
@@ -144,7 +145,10 @@ public class BetController {
             messageUtil.addInfoMsg(redirect, "msg.bet.betting.created");
         } catch (NoBettingAfterMatchStartedAllowedException e) {
             messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.matchInProgress");
+        } catch (NotEnoughPointsException e) {
+            messageUtil.addErrorMsg(redirect, "msg.bet.betting.error.notEnoughPoints");
         }
+        
 
         String view = RedirectViewName.resolveRedirect(betCommand.getRedirectViewName());
         return view + "#" + betCommand.getMatchId();

@@ -25,7 +25,7 @@ public class EditUserCommand {
 	private boolean child;
 	
 	// 增加points
-	private int points;
+	private Double points;
 	
 
 	public Set<String> getRoles() {
@@ -80,11 +80,11 @@ public class EditUserCommand {
 		this.child = child;
 	}
 
-	public int getPoints() {
+	public Double getPoints() {
 		return points;
 	}
 
-	public void setPoints(int points) {
+	public void setPoints(Double points) {
 		this.points = points;
 	}
 	

@@ -132,7 +132,8 @@ public class MatchService {
     }
 
     public boolean isGameForThirdAvailable() {
-        List<Match> matches = matchRepository.findByGroup(Group.GAME_FOR_THIRD);
-        return !matches.isEmpty();
+//        List<Match> matches = matchRepository.findByGroup(Group.GAME_FOR_THIRD);
+//        return !matches.isEmpty();
+    	return false;
     }
 }

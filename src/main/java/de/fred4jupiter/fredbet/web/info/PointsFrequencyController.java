@@ -30,14 +30,14 @@ public class PointsFrequencyController {
 
     @GetMapping
     public String show(Model model) {
-        MultiValuedMap<Integer, PointCountResult> map = reportService.reportPointsFrequency();
+        MultiValuedMap<Double, PointCountResult> map = reportService.reportPointsFrequency();
 
         if (map.isEmpty()) {
             webMessageUtil.addInfoMsg(model, "pointsfrequency.noData");
             return PAGE_INFO_POINTS_FREQ;
         }
 
-        List<Integer> pointsList = new ArrayList<>(map.keySet());
+        List<Double> pointsList = new ArrayList<>(map.keySet());
         Collections.reverse(pointsList);
 
         PointsFrequencyCommand command = new PointsFrequencyCommand(map);

@@ -1,6 +1,7 @@
 package de.fred4jupiter.fredbet.web.matches;
 
 import de.fred4jupiter.fredbet.domain.Group;
+import de.fred4jupiter.fredbet.repository.GroupRepository;
 import de.fred4jupiter.fredbet.security.SecurityService;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.bet.RedirectViewName;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/matches")
@@ -23,11 +26,14 @@ public class MatchController {
     private final WebMessageUtil messageUtil;
 
     private final MatchCommandMapper matchCommandMapper;
+    
+    private GroupRepository groupRepository;
 
-    public MatchController(SecurityService securityBean, WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper) {
+    public MatchController(SecurityService securityBean, WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper, GroupRepository groupRepository) {
         this.securityBean = securityBean;
         this.messageUtil = messageUtil;
         this.matchCommandMapper = matchCommandMapper;
+        this.groupRepository = groupRepository;
     }
 
     @GetMapping
@@ -48,13 +54,29 @@ public class MatchController {
         return VIEW_LIST_MATCHES;
     }
 
-    @GetMapping("/group/{groupName}")
-    public String listByGroup(@PathVariable("groupName") String groupName, Model model) {
-        final Group group = Group.valueOf(groupName);
-        List<MatchCommand> matches = matchCommandMapper.findMatchesByGroup(securityBean.getCurrentUserName(), group);
-        model.addAttribute("allMatches", matches);
-        model.addAttribute("heading", messageUtil.getMessageFor("group.entry." + groupName));
-        model.addAttribute("redirectViewName", RedirectViewName.createRedirectForGroup(group));
+    @GetMapping("/group/{groupUrl}")
+    public String listByGroup(@PathVariable("groupUrl") String groupUrl, Model model) {
+//        final Group group = Group.valueOf(groupName);
+
+        // 需要将groupName变换成原始的样子
+        String[] parts = groupUrl.split("_");
+        String groupName = String.join(" ", parts);
+
+        Optional<Group> groupOpt = groupRepository.findById(groupName);
+        List<MatchCommand> matches;
+        if(!groupOpt.isEmpty()) {
+            Group group = groupOpt.get();
+            matches = matchCommandMapper.findMatchesByGroup(securityBean.getCurrentUserName(), group);
+            model.addAttribute("allMatches", matches);
+            model.addAttribute("heading", group.getName());
+            model.addAttribute("redirectViewName", RedirectViewName.createRedirectForGroup(group));
+        } else {
+            matches = new ArrayList<>();
+            model.addAttribute("allMatches", matches);
+            model.addAttribute("heading", "No such group");
+            model.addAttribute("redirectViewName", "");
+        }
+
         return VIEW_LIST_MATCHES;
     }
 

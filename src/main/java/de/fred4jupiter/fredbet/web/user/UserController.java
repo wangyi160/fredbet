@@ -161,7 +161,7 @@ public class UserController {
             // create new user
             AppUserBuilder appUserBuilder = AppUserBuilder.create()
                     .withUsernameAndPassword(createUserCommand.getUsername(), createUserCommand.getPassword())
-                    .withIsChild(createUserCommand.isChild()).withFirstLogin(true);
+                    .withIsChild(createUserCommand.isChild()).withPoints(createUserCommand.getPoints()).withFirstLogin(true);
 
             if (webSecurityUtil.isRoleSelectionDisabledForUser(createUserCommand.getUsername())) {
                 LOG.debug("Role selection is disabled for user {}. Using default role {}", createUserCommand.getUsername(),

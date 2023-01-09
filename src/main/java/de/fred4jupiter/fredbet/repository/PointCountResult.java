@@ -7,11 +7,11 @@ public class PointCountResult {
 
 	private final String username;
 
-	private final Integer points;
+	private final Double points;
 
 	private final Long numberOfPointsCount;
 
-	public PointCountResult(String username, Integer points, Long numberOfPointsCount) {
+	public PointCountResult(String username, Double points, Long numberOfPointsCount) {
 		this.username = username;
 		this.points = points;
 		this.numberOfPointsCount = numberOfPointsCount;
@@ -21,7 +21,7 @@ public class PointCountResult {
 		return username;
 	}
 
-	public Integer getPoints() {
+	public Double getPoints() {
 		return points;
 	}
 

@@ -16,26 +16,10 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<input type="hidden" th:field="*{matchId}" class="form-control" />
-					<div class="form-group">
-						<label th:text="#{matches.form.chooseCountry} + ':'"></label><br/>
-						<div class="row">
-							<div class="col-xs-6">
-								<select th:field="*{countryTeamOne}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>								
-							</div>							
-							<div class="col-xs-6">
-								<select th:field="*{countryTeamTwo}" class="form-control">
-								  <option th:each="country : ${availableCountries}" th:value="${country}" th:text="#{${'country.' + country.isoCode}}"></option>
-								</select>								
-							</div>
-						</div>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('countryTeamOne')}" th:errors="*{countryTeamOne}">countryTeamOne error</p>
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('countryTeamTwo')}" th:errors="*{countryTeamTwo}">countryTeamTwo error</p>
-					</div>
+					
 					<div class="form-group">
 						<label th:text="#{matches.form.teamNames} + ':'"></label>
-						<a href="#" onclick="clearTeamNameFields()"><i class="fas fa-times-circle" aria-hidden="true"></i></a>
+						
 						<br/>
 						<div class="row">							
 							<div class="col-xs-6">
@@ -57,18 +41,24 @@
 						<input type="hidden" id="kickOffDateString" th:field="*{kickOffDateString}" value="" />
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('kickOffDateString')}" th:errors="*{kickOffDateString}">kickOffDateString error</p>
 		            </div>					
-					<div class="form-group">
-						<label for="stadium" th:text="#{matches.form.stadium} + ':'"></label>
-						<input id="stadium" type="text" th:field="*{stadium}" class="form-control" placeholder="z.B. St. Denis, Paris" />
-						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('stadium')}" th:errors="*{stadium}">stadium error</p>
-					</div>					
+									
 					<div class="form-group">
 						<label for="group" th:text="#{matches.form.group} + ':'"></label>
 						<select id="group" th:field="*{group}" class="form-control">
-						  <option th:each="gr : ${availableGroups}" th:value="${gr}" th:text="#{${'group.entry.' + gr}}"></option>
+						  <option th:each="gr : ${availableGroups}" th:value="${gr.getName()}" th:text="${gr.getName()}"></option>
 						</select>						
 						<p class="alert alert-danger field-alert" th:if="${#fields.hasErrors('group')}" th:errors="*{group}">group error</p>
-			        </div>					
+			        </div>		
+					
+					<div class="form-group">
+						<label for="winOdds">Win odds:</label>
+						<input id="winOdds" type="text" th:field="*{winOdds}" class="form-control" />
+						<label for="drawOdds">Draw odds:</label>
+						<input id="drawOdds" type="text" th:field="*{drawOdds}" class="form-control" />
+						<label for="loseOdds">Lose odds:</label>
+						<input id="loseOdds" type="text" th:field="*{loseOdds}" class="form-control" />
+			        </div>		
+
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary" th:text="#{button.save}"></button>
 						<button th:if="${createEditMatchCommand.isDeletable()}" type="button" sec:authorize="hasAuthority('PERM_DELETE_MATCH')" class="btn btn-danger"

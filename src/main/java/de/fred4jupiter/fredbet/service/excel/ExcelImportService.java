@@ -97,7 +97,7 @@ public class ExcelImportService {
             match.getTeamTwo().setName(country2);
         }
 
-        match.setGroup(Group.valueOf(group));
+        match.setGroup(new Group(group));
         match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
         match.setStadium(stadium);
         return match;

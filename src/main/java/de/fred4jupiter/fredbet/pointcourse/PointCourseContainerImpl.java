@@ -10,7 +10,7 @@ class PointCourseContainerImpl implements PointCourseContainer {
 
     private final List<String> matchLabels = new ArrayList<>();
 
-    private final Map<String, LinkedList<Integer>> map = new HashMap<>();
+    private final Map<String, LinkedList<Double>> map = new HashMap<>();
 
     public PointCourseContainerImpl(MessageSourceUtil messageSourceUtil, Locale locale, List<Match> matches) {
         matches.forEach(match -> {
@@ -21,11 +21,11 @@ class PointCourseContainerImpl implements PointCourseContainer {
         });
     }
 
-    public void add(String username, Integer points) {
+    public void add(String username, Double points) {
         map.computeIfAbsent(username, k -> new LinkedList<>());
 
-        LinkedList<Integer> values = map.get(username);
-        Integer last = values.peekLast();
+        LinkedList<Double> values = map.get(username);
+        Double last = values.peekLast();
         if (last == null) {
             values.addLast(points);
         } else {
@@ -36,7 +36,7 @@ class PointCourseContainerImpl implements PointCourseContainer {
     private void iteratePointsPerUser(PointCourseContainerImpl.ResultCallback resultCallback) {
         Set<String> usernames = map.keySet();
         for (String username : usernames) {
-            LinkedList<Integer> pointsPerUser = map.get(username);
+            LinkedList<Double> pointsPerUser = map.get(username);
             resultCallback.doWith(username, pointsPerUser);
         }
     }
@@ -60,6 +60,6 @@ class PointCourseContainerImpl implements PointCourseContainer {
     @FunctionalInterface
     public interface ResultCallback {
 
-        void doWith(String username, List<Integer> pointsList);
+        void doWith(String username, List<Double> pointsList);
     }
 }

@@ -7,11 +7,11 @@ import java.util.List;
 
 public class PointsFrequency {
 
-    private final Integer points;
+    private final Double points;
 
     private final List<PointCountResult> list;
 
-    public PointsFrequency(Integer points, List<PointCountResult> list) {
+    public PointsFrequency(Double points, List<PointCountResult> list) {
         this.points = points;
         this.list = list;
 
@@ -20,7 +20,7 @@ public class PointsFrequency {
         this.list.sort(comparator1.thenComparing(comparator2));
     }
 
-    public Integer getPoints() {
+    public Double getPoints() {
         return points;
     }
 

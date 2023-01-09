@@ -6,9 +6,9 @@ public class PointCourseResultSimple {
 
     private final String username;
 
-    private final Integer points;
+    private final Double points;
 
-    public PointCourseResultSimple(Long matchId, String username, Integer points) {
+    public PointCourseResultSimple(Long matchId, String username, Double points) {
         this.matchId = matchId;
         this.username = username;
         this.points = points;
@@ -22,7 +22,7 @@ public class PointCourseResultSimple {
         return username;
     }
 
-    public Integer getPoints() {
+    public Double getPoints() {
         return points;
     }
 }

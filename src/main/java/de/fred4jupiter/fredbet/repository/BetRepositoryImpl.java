@@ -32,7 +32,7 @@ class BetRepositoryImpl implements BetRepositoryCustom {
 
         namedParameterJdbcOperations.query(sql, (ResultSet rs) -> {
             Long matchId = rs.getLong(1);
-            PointCourseResultSimple entry = new PointCourseResultSimple(matchId, rs.getString(2), rs.getInt(3));
+            PointCourseResultSimple entry = new PointCourseResultSimple(matchId, rs.getString(2), rs.getDouble(3));
             map.put(matchId, entry);
         });
         return map;

@@ -5,67 +5,37 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum Group {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-	GROUP_A("group.title.A"),
+@Entity
+@Table(name = "FOOTBALL_GROUP")
+public class Group {
 
-	GROUP_B("group.title.B"),
+	@Id
+	@Column(name = "NAME")
+	private String name;
 
-	GROUP_C("group.title.C"),
-
-	GROUP_D("group.title.D"),
-
-	GROUP_E("group.title.E"),
-
-	GROUP_F("group.title.F"),
-	
-	GROUP_G("group.title.G"),
-	
-	GROUP_H("group.title.H"),
-
-	GROUP_I("group.title.I"),
-
-	GROUP_J("group.title.J"),
-
-	ROUND_OF_SIXTEEN("group.title.roundOfSixteen"), // Achtelfinale
-
-	QUARTER_FINAL("group.title.quarterFinal"), // Viertelfinale
-
-	SEMI_FINAL("group.title.semiFinal"), // Halbfinale
-
-	FINAL("group.title.final"), // Finale
-    
-    GAME_FOR_THIRD("group.title.gameForThird"); // Spiel um den 3. Platz
-
-	private final String titleMsgKey;
-
-	Group(String titleMsgKey) {
-		this.titleMsgKey = titleMsgKey;
+	protected Group() {
+		// for hibernate
 	}
-
-	public String getTitleMsgKey() {
-		return titleMsgKey;
+	
+	public Group(String name) {
+		this.name = name;
 	}
 
 	public String getName() {
-		return this.name();
+		return name;
 	}
 
-	public static List<Group> getAllGroups() {
-		return Arrays.asList(Group.values());
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public static List<Group> getMainGroups() {
-		List<Group> groups = Arrays.asList(values());
-		return groups.stream().filter(group -> group.name().startsWith("GROUP_"))
-				.sorted(Comparator.comparing(Group::name)).collect(Collectors.toList());
-	}
-	
-	public static List<Group> getFinalGroups() {
-        return Arrays.asList(ROUND_OF_SIXTEEN, QUARTER_FINAL, SEMI_FINAL, FINAL);
-    }
-	
-	public boolean isKnockoutRound() {
-	    return !this.name().startsWith("GROUP_");
+	public String getUrl() {
+		String[] parts = name.split(" ");
+		return String.join("_", parts);
 	}
 }

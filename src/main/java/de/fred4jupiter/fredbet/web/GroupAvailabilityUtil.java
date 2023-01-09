@@ -21,7 +21,8 @@ public class GroupAvailabilityUtil {
     }
 
     public boolean isGroupAvailable(String groupName) {
-        return isGroupAvailable(Group.valueOf(groupName));
+//        return isGroupAvailable(Group.valueOf(groupName));
+    	return true;
     }
 
     public boolean isGroupAvailable(Group group) {

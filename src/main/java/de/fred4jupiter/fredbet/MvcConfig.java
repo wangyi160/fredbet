@@ -1,5 +1,6 @@
 package de.fred4jupiter.fredbet;
 
+import de.fred4jupiter.fredbet.repository.GroupRepository;
 import de.fred4jupiter.fredbet.web.ActivePageHandlerInterceptor;
 import de.fred4jupiter.fredbet.web.ChangePasswordFirstLoginInterceptor;
 import de.fred4jupiter.fredbet.web.WebSecurityUtil;
@@ -27,8 +28,11 @@ public class MvcConfig implements WebMvcConfigurer {
 
     private final WebSecurityUtil webSecurityUtil;
 
-    public MvcConfig(WebSecurityUtil webSecurityUtil) {
+    private GroupRepository groupRepository;
+
+    public MvcConfig(WebSecurityUtil webSecurityUtil, GroupRepository groupRepository) {
         this.webSecurityUtil = webSecurityUtil;
+        this.groupRepository = groupRepository;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new ActivePageHandlerInterceptor());
+        registry.addInterceptor(new ActivePageHandlerInterceptor(groupRepository.findAll()));
         registry.addInterceptor(localeChangeInterceptor());
         registry.addInterceptor(changePasswordFirstLoginInterceptor());
 

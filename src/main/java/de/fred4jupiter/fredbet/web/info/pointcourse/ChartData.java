@@ -13,9 +13,9 @@ public class ChartData {
         this.labels.addAll(labels);
     }
 
-    public void addDataSet(String name, List<Integer> values) {
+    public void addDataSet(String name, List<Double> values) {
         DataSet dataSet = new DataSet(name);
-        for (Integer value : values) {
+        for (Double value : values) {
             dataSet.addData(value);
         }
         this.datasets.add(dataSet);

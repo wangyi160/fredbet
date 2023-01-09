@@ -19,13 +19,16 @@ public class CreateEditMatchCommand {
 
 	private Long matchId;
 
+	@NotNull
 	private String teamNameOne;
+
+	@NotNull
 	private String teamNameTwo;
 
-	@NotNull
+	//@NotNull
 	private Country countryTeamOne;
 
-	@NotNull
+	//@NotNull
 	private Country countryTeamTwo;
 
 	@NotNull
@@ -34,10 +37,14 @@ public class CreateEditMatchCommand {
 	@NotNull
 	private Group group;
 
-	@NotBlank
+	//@NotBlank
 	private String stadium;
 
 	private boolean deletable;
+	
+	private double winOdds;
+	private double drawOdds;
+	private double loseOdds;
 
 	public Long getMatchId() {
 		return matchId;
@@ -124,6 +131,32 @@ public class CreateEditMatchCommand {
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
 	}
+
+	public double getWinOdds() {
+		return winOdds;
+	}
+
+	public void setWinOdds(double winOdds) {
+		this.winOdds = winOdds;
+	}
+
+	public double getDrawOdds() {
+		return drawOdds;
+	}
+
+	public void setDrawOdds(double drawOdds) {
+		this.drawOdds = drawOdds;
+	}
+
+	public double getLoseOdds() {
+		return loseOdds;
+	}
+
+	public void setLoseOdds(double loseOdds) {
+		this.loseOdds = loseOdds;
+	}
+	
+	
 	
 	
 }

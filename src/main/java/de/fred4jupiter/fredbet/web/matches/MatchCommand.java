@@ -114,7 +114,8 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 //    }
 
     public boolean isGroupMatch() {
-        return this.group.name().startsWith("GROUP");
+//        return this.group.name().startsWith("GROUP");
+    	return true;
     }
 
 //    public boolean isPenaltyWinnerOneBet() {

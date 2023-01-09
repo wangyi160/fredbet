@@ -4,6 +4,7 @@ import de.fred4jupiter.fredbet.data.RandomValueGenerator;
 import de.fred4jupiter.fredbet.domain.*;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.props.FredbetProperties;
+import de.fred4jupiter.fredbet.repository.AppUserRepository;
 import de.fred4jupiter.fredbet.repository.BetRepository;
 import de.fred4jupiter.fredbet.repository.ExtraBetRepository;
 import de.fred4jupiter.fredbet.repository.MatchRepository;
@@ -44,10 +45,12 @@ public class BettingService {
     private final MatchService matchService;
 
     private final FredbetProperties fredbetProperties;
+    
+    private final AppUserRepository appUserRepository;
 
     public BettingService(MatchRepository matchRepository, BetRepository betRepository, ExtraBetRepository extraBetRepository,
                           SecurityService securityService, JokerService jokerService, RandomValueGenerator randomValueGenerator,
-                          MatchService matchService, FredbetProperties fredbetProperties) {
+                          MatchService matchService, FredbetProperties fredbetProperties, AppUserRepository appUserRepository) {
         this.matchRepository = matchRepository;
         this.betRepository = betRepository;
         this.extraBetRepository = extraBetRepository;
@@ -56,6 +59,7 @@ public class BettingService {
         this.randomValueGenerator = randomValueGenerator;
         this.matchService = matchService;
         this.fredbetProperties = fredbetProperties;
+        this.appUserRepository = appUserRepository;
     }
 
     public Bet createAndSaveBetting(String username, Match match, Integer goalsTeamOne, Integer goalsTeamTwo, boolean withJoker) {
@@ -85,16 +89,12 @@ public class BettingService {
 
     public List<Match> findMatchesToBet(String username) {
         List<Bet> userBets = betRepository.findByUserName(username);
-        System.out.println(userBets);
-        
         List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
 
-        System.out.println(matchIds);
         
         List<Match> matchesToBet = new ArrayList<>();
         List<Match> allMatches = matchRepository.findAllByOrderByKickOffDateAsc();
         
-        System.out.println(allMatches);
         
         for (Match match : allMatches) {
             if (!matchIds.contains(match.getId()) && match.isBettable()) {
@@ -107,8 +107,16 @@ public class BettingService {
 
     public Long save(Bet bet) {
         Match match = matchRepository.getReferenceById(bet.getMatch().getId());
+        
+        // 判断比赛开始与否
         if (match.hasStarted()) {
             throw new NoBettingAfterMatchStartedAllowedException("The match has already been started! You are to late!");
+        }
+        
+        // 判断是否有足够的points
+        AppUser user = securityService.getCurrentUser();
+        if(user.getPoints() < bet.getPoints()) {
+        	throw new NotEnoughPointsException("You don't have enough points!");
         }
 
 //        if (bet.isJoker() && !jokerService.isSettingJokerAllowed(bet.getUserName(), bet.getMatch().getId())) {
@@ -119,6 +127,10 @@ public class BettingService {
             bet.setUserName(securityService.getCurrentUserName());
         }
 
+        // 从user的points中减去相应的数量
+        user.setPoints(user.getPoints() - bet.getPoints());
+        appUserRepository.save(user);
+        
         Bet saved = betRepository.save(bet);
         return saved.getId();
     }
@@ -214,7 +226,8 @@ public class BettingService {
     }
 
     public Match findFinalMatch() {
-        List<Match> matches = matchRepository.findByGroup(Group.FINAL);
+//        List<Match> matches = matchRepository.findByGroup(Group.FINAL);
+    	List<Match> matches = matchRepository.findAll();
         if (Validator.isEmpty(matches)) {
             return null;
         }

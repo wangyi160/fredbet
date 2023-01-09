@@ -52,7 +52,8 @@ public class StandingsContainer {
     }
 
     public List<Group> getGroups() {
-        return Group.getMainGroups();
+//        return Group.getMainGroups();
+    	return new ArrayList<>();
     }
 
     public List<TeamStandings> getForGroup(Group group) {

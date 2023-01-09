@@ -26,6 +26,8 @@ public class CreateUserCommand {
 	private Set<String> roles = new HashSet<>();
 
 	private boolean child;
+	
+	private Double points;
 
 	public CreateUserCommand() {
 		this.roles.add(FredBetUserGroup.ROLE_USER.name());
@@ -84,4 +86,14 @@ public class CreateUserCommand {
 		this.child = child;
 	}
 
+	public Double getPoints() {
+		return points;
+	}
+
+	public void setPoints(Double points) {
+		this.points = points;
+	}
+
+	
+	
 }

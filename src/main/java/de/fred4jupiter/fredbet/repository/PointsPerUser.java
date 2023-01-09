@@ -4,9 +4,9 @@ public class PointsPerUser {
 
     private final String username;
 
-    private final Long points;
+    private final Double points;
 
-    public PointsPerUser(String username, Long points) {
+    public PointsPerUser(String username, Double points) {
         this.username = username;
         this.points = points;
     }
@@ -15,7 +15,7 @@ public class PointsPerUser {
         return username;
     }
 
-    public Long getPoints() {
+    public Double getPoints() {
         return points;
     }
 

@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.web.matches;
 import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.repository.GroupRepository;
 import de.fred4jupiter.fredbet.security.FredBetPermission;
 import de.fred4jupiter.fredbet.service.BettingService;
 import de.fred4jupiter.fredbet.service.CountryService;
@@ -40,13 +41,16 @@ public class CreateEditMatchController {
     private final CountryService countryService;
 
     private final BettingService bettingService;
+    
+    private final GroupRepository groupRepository;
 
     public CreateEditMatchController(WebMessageUtil webMessageUtil, MatchService matchService, CountryService countryService,
-                                     BettingService bettingService) {
+                                     BettingService bettingService, GroupRepository groupRepository) {
         this.webMessageUtil = webMessageUtil;
         this.matchService = matchService;
         this.countryService = countryService;
         this.bettingService = bettingService;
+        this.groupRepository = groupRepository;
     }
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_CREATE_MATCH + "')")
@@ -79,6 +83,7 @@ public class CreateEditMatchController {
     @PostMapping
     public String save(@Valid CreateEditMatchCommand createEditMatchCommand, BindingResult result, RedirectAttributes redirect, Model model) {
         if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
             model.addAttribute("createEditMatchCommand", createEditMatchCommand);
             addCountriesAndGroups(model);
             return VIEW_EDIT_MATCH;
@@ -118,7 +123,8 @@ public class CreateEditMatchController {
     }
 
     private void addCountriesAndGroups(Model model, Group group) {
-        model.addAttribute("availableGroups", Group.getAllGroups());
+    	
+    	model.addAttribute("availableGroups", groupRepository.findAll());
         List<Country> countries = countryService.getAvailableCountriesSortedWithNoneEntryByLocale(LocaleContextHolder.getLocale(), group);
         model.addAttribute("availableCountries", countries);
     }
@@ -133,6 +139,11 @@ public class CreateEditMatchController {
         command.setKickOffDate(match.getKickOffDate());
         command.setMatchId(match.getId());
         command.setStadium(match.getStadium());
+        
+        command.setWinOdds(match.getWinOdds());
+        command.setDrawOdds(match.getDrawOdds());
+        command.setLoseOdds(match.getLoseOdds());
+        
         return command;
     }
 
@@ -161,5 +172,9 @@ public class CreateEditMatchController {
         match.setKickOffDate(matchCommand.getKickOffDate());
         match.setGroup(matchCommand.getGroup());
         match.setStadium(matchCommand.getStadium());
+
+        match.setWinOdds(matchCommand.getWinOdds());
+        match.setDrawOdds(matchCommand.getDrawOdds());
+        match.setLoseOdds(matchCommand.getLoseOdds());
     }
 }

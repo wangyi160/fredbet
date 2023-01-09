@@ -6,11 +6,11 @@ public class PointCourseResult {
 
     private final String username;
 
-    private final Integer points;
+    private final Double points;
 
     private final Match match;
 
-    public PointCourseResult(String username, Integer points, Match match) {
+    public PointCourseResult(String username, Double points, Match match) {
         this.username = username;
         this.points = points;
         this.match = match;
@@ -20,7 +20,7 @@ public class PointCourseResult {
         return username;
     }
 
-    public Integer getPoints() {
+    public Double getPoints() {
         return points;
     }
 

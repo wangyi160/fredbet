@@ -7,13 +7,13 @@ public class DataSet {
 
     private final String label;
 
-    private final List<Integer> data = new ArrayList<>();
+    private final List<Double> data = new ArrayList<>();
 
     public DataSet(String label) {
         this.label = label;
     }
 
-    public void addData(Integer value) {
+    public void addData(Double value) {
         this.data.add(value);
     }
 
@@ -21,7 +21,7 @@ public class DataSet {
         return label;
     }
 
-    public List<Integer> getData() {
+    public List<Double> getData() {
         return data;
     }
 }

@@ -57,6 +57,15 @@ public class WebSecurityUtil {
         return securityService.isUserLoggedIn();
     }
 
+    public double getUserPoints() {
+        try {
+            AppUser currentUser = securityService.getCurrentUser();
+            return currentUser.getPoints();
+        } catch (UsernameNotFoundException e) {
+            return 0;
+        }
+    }
+
     /**
      * Will be used in navigation bar.
      *

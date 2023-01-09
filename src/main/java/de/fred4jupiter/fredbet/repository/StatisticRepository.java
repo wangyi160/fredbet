@@ -74,19 +74,19 @@ public class StatisticRepository {
             if (statistic == null) {
                 statistic = new Statistic(username);
             }
-            if (group.startsWith("GROUP")) {
-                statistic.setPointsGroup(statistic.getPointsGroup() + points);
-            } else if (Group.ROUND_OF_SIXTEEN.getName().equals(group)) {
-                statistic.setPointsRoundOfSixteen(points);
-            } else if (Group.QUARTER_FINAL.getName().equals(group)) {
-                statistic.setPointsQuarterFinal(points);
-            } else if (Group.SEMI_FINAL.getName().equals(group)) {
-                statistic.setPointsSemiFinal(points);
-            } else if (Group.FINAL.getName().equals(group)) {
-                statistic.setPointsFinal(points);
-            } else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
-                statistic.setPointsGameForThird(points);
-            }
+//            if (group.startsWith("GROUP")) {
+//                statistic.setPointsGroup(statistic.getPointsGroup() + points);
+//            } else if (Group.ROUND_OF_SIXTEEN.getName().equals(group)) {
+//                statistic.setPointsRoundOfSixteen(points);
+//            } else if (Group.QUARTER_FINAL.getName().equals(group)) {
+//                statistic.setPointsQuarterFinal(points);
+//            } else if (Group.SEMI_FINAL.getName().equals(group)) {
+//                statistic.setPointsSemiFinal(points);
+//            } else if (Group.FINAL.getName().equals(group)) {
+//                statistic.setPointsFinal(points);
+//            } else if (Group.GAME_FOR_THIRD.getName().equals(group)) {
+//                statistic.setPointsGameForThird(points);
+//            }
             statisticsMap.put(username, statistic);
         }
 

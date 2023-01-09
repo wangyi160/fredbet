@@ -53,7 +53,7 @@ public class PointCourseService {
                     PointCourseResult pointCourseResult = found.get();
                     pointCourseContainer.add(pointCourseResult.getUsername(), pointCourseResult.getPoints());
                 } else {
-                    pointCourseContainer.add(user, 0);
+                    pointCourseContainer.add(user, 0.0);
                 }
             });
         });

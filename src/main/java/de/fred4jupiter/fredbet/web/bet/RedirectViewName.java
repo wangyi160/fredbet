@@ -59,7 +59,7 @@ public enum RedirectViewName {
     }
 
     public static String createRedirectForGroup(Group group) {
-        return GROUP_PREFIX + group.name();
+        return GROUP_PREFIX + group.getName();
     }
 
 }

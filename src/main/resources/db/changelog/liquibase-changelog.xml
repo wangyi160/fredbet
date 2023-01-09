@@ -263,7 +263,7 @@
 
     <changeSet id="12" author="wangyi">
         <addColumn tableName="app_user">
-            <column name="points" type="DOUBLE" defaultValueBoolean="0.0">
+            <column name="points" type="DOUBLE" defaultValueNumeric="0.0">
                 <constraints nullable="false"/>
             </column>
         </addColumn>
@@ -287,13 +287,13 @@
 
     <changeSet id="14" author="wangyi">
         <addColumn tableName="matches">
-            <column name="win_odds" type="DOUBLE" defaultValueBoolean="0.0">
+            <column name="win_odds" type="DOUBLE" defaultValueNumeric="0.0">
                 <constraints nullable="false"/>
             </column>
-            <column name="draw_odds" type="DOUBLE" defaultValueBoolean="0.0">
+            <column name="draw_odds" type="DOUBLE" defaultValueNumeric="0.0">
                 <constraints nullable="false"/>
             </column>
-            <column name="lose_odds" type="DOUBLE" defaultValueBoolean="0.0">
+            <column name="lose_odds" type="DOUBLE" defaultValueNumeric="0.0">
                 <constraints nullable="false"/>
             </column>
         </addColumn>

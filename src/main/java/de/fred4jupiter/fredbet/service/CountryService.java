@@ -25,13 +25,13 @@ public class CountryService {
     public List<Country> getAvailableCountriesSortedWithNoneEntryByLocale(Locale locale, Group group) {
         final LinkedList<Country> result = new LinkedList<>();
 
-        if (group == null || !group.isKnockoutRound()) {
-            result.addAll(sortCountries(locale, getAllCountriesWithoutNoneEntry()));
-        } else {
+//        if (group == null || !group.isKnockoutRound()) {
+//            result.addAll(sortCountries(locale, getAllCountriesWithoutNoneEntry()));
+//        } else {
             Set<Country> countries = getAvailableCountriesWithoutNoneEntry();
             List<Country> sortedCountries = sortCountries(locale, new ArrayList<>(countries));
             result.addAll(sortedCountries);
-        }
+//        }
 
         result.addFirst(Country.NONE);
         return result;
