@@ -89,7 +89,7 @@ public class BettingService {
 
     public List<Match> findMatchesToBet(String username) {
         List<Bet> userBets = betRepository.findByUserName(username);
-        List<Long> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
+        List<String> matchIds = userBets.stream().map(bet -> bet.getMatch().getId()).collect(Collectors.toList());
 
         
         List<Match> matchesToBet = new ArrayList<>();
@@ -135,7 +135,7 @@ public class BettingService {
         return saved.getId();
     }
 
-    public Bet createBetForMatch(Long matchId, String betType) {
+    public Bet createBetForMatch(String matchId, String betType) {
         final Optional<Match> matchOpt = matchRepository.findById(matchId);
         if (matchOpt.isEmpty()) {
             return null;
@@ -173,7 +173,7 @@ public class BettingService {
         extraBetRepository.deleteAll();
     }
 
-    public List<Bet> findAllBetsForMatchId(final Long matchId) {
+    public List<Bet> findAllBetsForMatchId(final String matchId) {
         if (matchId == null) {
             return null;
         }

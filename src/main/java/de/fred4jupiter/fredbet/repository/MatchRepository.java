@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,13 +14,12 @@ import de.fred4jupiter.fredbet.domain.Country;
 import de.fred4jupiter.fredbet.domain.Group;
 import de.fred4jupiter.fredbet.domain.Match;
 
-public interface MatchRepository extends JpaRepository<Match, Long> {
+public interface MatchRepository extends JpaRepository<Match, String> {
 
 	List<Match> findAllByOrderByKickOffDateAsc();
 
-	@Query("select m from Match m where (m.group like 'GROUP%' and m.kickOffDate > :groupKickOffDate) or (m.group not like 'GROUP%' and m.kickOffDate > :koKickOffDate) or (m.teamOne.goals is null and m.teamTwo.goals is null) order by m.kickOffDate asc")
-	List<Match> findUpcomingMatches(@Param("groupKickOffDate") LocalDateTime groupKickOffDate,
-			@Param("koKickOffDate") LocalDateTime koKickOffDate);
+	@Query("select m from Match m where m.kickOffDate > :koKickOffDate order by m.kickOffDate asc")
+	List<Match> findUpcomingMatches(@Param("koKickOffDate") LocalDateTime koKickOffDate);
 
 	List<Match> findByGroupOrderByKickOffDateAsc(Group group);
 
@@ -42,4 +43,15 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
 
 	@Query("select m from Match m where m.teamOne.goals is not null and m.teamTwo.goals is not null order by m.kickOffDate asc")
 	List<Match> findFinishedMatches();
+
+	// 分页需要
+	Page<Match> findAll(Pageable pageable);
+
+	@Query("select m from Match m where m.kickOffDate > :koKickOffDate order by m.kickOffDate asc")
+	Page<Match> findUpcomingMatches(Pageable pageable, @Param("koKickOffDate") LocalDateTime koKickOffDate);
+
+	Page<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
+
+	Page<Match> findByGroupOrderByKickOffDateAsc(Pageable pageable, Group group);
+
 }

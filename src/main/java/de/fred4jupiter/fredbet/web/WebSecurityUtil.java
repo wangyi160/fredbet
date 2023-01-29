@@ -62,6 +62,7 @@ public class WebSecurityUtil {
             AppUser currentUser = securityService.getCurrentUser();
             return currentUser.getPoints();
         } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
             return 0;
         }
     }

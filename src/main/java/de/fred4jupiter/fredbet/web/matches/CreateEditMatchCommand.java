@@ -17,7 +17,7 @@ public class CreateEditMatchCommand {
 
 	private static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm";
 
-	private Long matchId;
+	private String matchId;
 
 	@NotNull
 	private String teamNameOne;
@@ -46,11 +46,11 @@ public class CreateEditMatchCommand {
 	private double drawOdds;
 	private double loseOdds;
 
-	public Long getMatchId() {
+	public String getMatchId() {
 		return matchId;
 	}
 
-	public void setMatchId(Long matchId) {
+	public void setMatchId(String matchId) {
 		this.matchId = matchId;
 	}
 

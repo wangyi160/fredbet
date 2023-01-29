@@ -23,7 +23,7 @@ public class IcsCalendarController {
     }
 
     @RequestMapping(value = "/{matchId}", method = RequestMethod.GET, produces = CONTENT_TYPE)
-    public ResponseEntity<byte[]> downloadIcsCalendarFile(@PathVariable("matchId") Long matchId) {
+    public ResponseEntity<byte[]> downloadIcsCalendarFile(@PathVariable("matchId") String matchId) {
         final IcsFile icsFile = icsCalendarService.createCalendarEventFromMatch(matchId, LocaleContextHolder.getLocale());
 
         if (icsFile == null) {

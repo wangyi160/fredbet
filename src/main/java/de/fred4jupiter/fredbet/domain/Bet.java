@@ -9,6 +9,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
+
 @Entity
 @Table(name = "BET")
 public class Bet implements Visitable {
@@ -24,6 +27,9 @@ public class Bet implements Visitable {
     @ManyToOne(targetEntity = Match.class)
     @JoinColumn(name = "MATCH_ID")
     private Match match;
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
 
 //    private Integer goalsTeamOne;
 //
@@ -282,6 +288,13 @@ public class Bet implements Visitable {
 	public void setReward(double reward) {
 		this.reward = reward;
 	}
-    
-    
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
 }

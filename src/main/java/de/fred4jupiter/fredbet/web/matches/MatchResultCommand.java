@@ -6,7 +6,7 @@ import de.fred4jupiter.fredbet.web.validation.TeamResultConstraint;
 @TeamResultConstraint(message = "{msg.invalidTeamResult}")
 public class MatchResultCommand {
 
-    private Long matchId;
+    private String matchId;
 
     private String teamNameOne;
     private String teamNameTwo;
@@ -37,11 +37,11 @@ public class MatchResultCommand {
         this.redirectViewName = redirectViewName;
     }
 
-    public Long getMatchId() {
+    public String getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(Long matchId) {
+    public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
 

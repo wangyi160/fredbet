@@ -5,6 +5,8 @@ import de.fred4jupiter.fredbet.web.AbstractMatchHeaderCommand;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.time.LocalDateTime;
+
 public class MatchCommand extends AbstractMatchHeaderCommand {
 
     private static final String LABEL_INFO = "label-info";
@@ -15,7 +17,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
 
     private static final String LABEL_INFO_PENALTY = LABEL_INFO + " " + FredbetConstants.BADGE_PENALTY_WINNER_MATCH_CSS_CLASS;
 
-    private Long matchId;
+    private String matchId;
 
     private Integer teamResultOne;
 
@@ -47,6 +49,16 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
     }
 
     public boolean hasMatchFinished() {
+        if(hasMatchResult())
+            return true;
+
+        if(LocalDateTime.now().isAfter(kickOffDate.plusMinutes(300)))
+            return true;
+
+        return false;
+    }
+
+    public boolean hasMatchResult() {
         return teamResultOne != null && teamResultTwo != null;
     }
 
@@ -66,11 +78,11 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
         this.teamResultTwo = teamResultTwo;
     }
 
-    public Long getMatchId() {
+    public String getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(Long matchId) {
+    public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
 
@@ -153,7 +165,7 @@ public class MatchCommand extends AbstractMatchHeaderCommand {
         if (teamResultOne == null || teamResultTwo == null) {
             throw new IllegalStateException("No goals match set!");
         }
-        return Math.abs(teamResultOne - teamResultTwo);
+        return Math.abs((Integer)teamResultOne - (Integer)teamResultTwo);
     }
 
 //    public String getUserBetGoalsTeamOneCssClasses() {

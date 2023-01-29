@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 public class BetController {
 
     private static final String VIEW_LIST_OPEN = "bet/list_open";
+
+    private static final String VIEW_LIST_HISTORY = "bet/history";
 
     private static final String VIEW_EDIT = "bet/edit";
 
@@ -83,7 +87,7 @@ public class BetController {
     }
 
     @GetMapping("/createOrUpdate/{matchId}/{betType}")
-    public String showBet(@PathVariable("matchId") Long matchId,  @PathVariable("betType") String betType,
+    public String showBet(@PathVariable("matchId") String matchId,  @PathVariable("betType") String betType,
     		@RequestParam(required = false) String redirectViewName, Model model) {
         Bet bet = bettingService.createBetForMatch(matchId, betType);
         if (bet == null) {
@@ -165,6 +169,8 @@ public class BetController {
             bet.setPoints(betCommand.getPoints());
             bet.setBetType(betCommand.getBetType());
             bet.setOdds(betCommand.getOdds());
+
+            bet.setCreatedAt(LocalDateTime.now());
             
         } else {
             bet = bettingService.findBetById(betCommand.getBetId());
@@ -178,7 +184,7 @@ public class BetController {
     }
 
     @GetMapping("/others/match/{matchId}")
-    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") Long matchId,
+    public ModelAndView findBetsOfAllUsersByMatchId(@PathVariable("matchId") String matchId,
     		@RequestParam(required = false) String redirectViewName, RedirectAttributes redirect) {
     	
         AllBetsCommand allBetsCommand = allBetsCommandMapper.findAllBetsForMatchId(matchId);
@@ -193,6 +199,23 @@ public class BetController {
         return new ModelAndView("bet/others", "allBetsCommand", allBetsCommand);
         
     }
+
+    @GetMapping("/history")
+    public String listUserBets(Model model) {
+        List<Bet> userBets = bettingService.findAllByUsername(securityService.getCurrentUserName());
+
+        model.addAttribute("bets", userBets);
+        return VIEW_LIST_HISTORY;
+    }
+
+    @GetMapping("/list")
+    public String getUserBets(Model model) {
+        List<Bet> userBets = bettingService.findAllByUsername(securityService.getCurrentUserName());
+
+        model.addAttribute("bets", userBets);
+        return VIEW_LIST_HISTORY;
+    }
+
 }
 
 

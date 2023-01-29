@@ -33,7 +33,7 @@ public class MatchResultController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH_RESULT + "')")
     @GetMapping("/{id}")
-    public String edit(@PathVariable("id") Long matchId, @RequestParam(required = false) String redirectViewName, Model model) {
+    public String edit(@PathVariable("id") String matchId, @RequestParam(required = false) String redirectViewName, Model model) {
         Match match = matchService.findMatchById(matchId);
         MatchResultCommand matchResultCommand = toMatchResultCommand(match);
         matchResultCommand.setRedirectViewName(redirectViewName);

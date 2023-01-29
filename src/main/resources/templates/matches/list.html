@@ -1,84 +1,135 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}" 
-	>
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{_layout}"
+>
 <head>
 	<title th:text="${heading}"></title>
 </head>
 <body>
-	<div layout:fragment="content">
-		<div th:replace="~{fragments/alert :: alert_headline}"></div>
-		<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
-			<div class="row">
-				<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
-					<a class="anchor" th:id="${matchCommand.matchId}"></a>
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-12">
-									<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}" th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
-							  		<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
-							  		<span> - </span>
-							  		<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}" th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
-							  		<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
-									<br/>
-									<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
-																									  		
-									<br/> 
-									<span th:text="${matchCommand.group.name}"></span><span>,</span>
-									
-					  			</div>					  			
-				  			</div>				  									
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-12">
-									<div class="short-div goal_padding">
-										<ul>
-											<li>
-												<a th:if="${matchCommand.isBettable()}" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '/win?redirectViewName=' + ${redirectViewName}}">
-													<span class="fas " th:text="@{' Win ' + ${matchCommand.winOdds} + ' '}"></span>
-												</a>
-											</li>
-										
-											<li>
-												<a th:if="${matchCommand.isBettable()}" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '/draw?redirectViewName=' + ${redirectViewName}}">
-													<span class="fas " th:text="@{' Draw ' + ${matchCommand.drawOdds} + ' '}"></span>
-												</a>
-											</li>
-											<li>
-												<a th:if="${matchCommand.isBettable()}" th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '/lose?redirectViewName=' + ${redirectViewName}}">
-													<span class="fas " th:text="@{' Lose ' + ${matchCommand.loseOdds} + ' '}"></span>
-												</a>
-											</li>
-										</ul>
-										
-									</div>
+<div layout:fragment="content">
+	<div th:replace="~{fragments/alert :: alert_headline}"></div>
 
-									<div class="col-xs-6 button-bar" sec:authorize="hasAuthority('PERM_EDIT_MATCH')">
-										<div class="row center">
-											<a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#" th:href="@{'/match/' + ${matchCommand.matchId}}" 
-												class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
-												<span class="fas fa-edit"></span>
-											</a>				            			
-											
-											<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#" th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
-													class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
-													<span class="fas fa-trophy"></span>
-											</a>
-										</div>
-									</div>
-														  									  		
-					  			</div>	
-					  				
-					  			
-       						</div>
-					   </div>					   
+	<h1 th:text="${heading} + ' (' + ${#lists.size(allMatches)} + ')'"></h1>
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-4" th:each="matchCommand : ${allMatches}">
+			<a class="anchor" th:id="${matchCommand.matchId}"></a>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-12">
+							<img class="flag" th:if="${matchCommand.getIconPathTeamOne() != null}"
+								 th:src="@{${matchCommand.getIconPathTeamOne()}}"/>
+							<span class="bold" th:text="${matchCommand.teamNameOne}"></span>
+							<span> - </span>
+							<img class="flag" th:if="${matchCommand.getIconPathTeamTwo() != null}"
+								 th:src="@{${matchCommand.getIconPathTeamTwo()}}"/>
+							<span class="bold" th:text="${matchCommand.teamNameTwo}"></span>
+							<br/>
+							<span th:text="${#temporals.format(matchCommand.kickOffDate, 'EEE dd. MMMM yyyy HH:mm')}"></span>
+
+							<br/>
+							<span th:text="${matchCommand.group.name}"></span><span>,</span>
+
+						</div>
 					</div>
-				</div>				
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="short-div goal_padding">
+								<ul>
+									<li>
+										<a th:if="${matchCommand.isBettable()}"
+										   th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '/win?redirectViewName=' + ${redirectViewName}}">
+                                            <span class="fas "
+												  th:text="@{' Win ' + ${matchCommand.winOdds} + ' '}"></span>
+										</a>
+									</li>
+
+									<li>
+										<a th:if="${matchCommand.isBettable()}"
+										   th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '/draw?redirectViewName=' + ${redirectViewName}}">
+                                            <span class="fas "
+												  th:text="@{' Draw ' + ${matchCommand.drawOdds} + ' '}"></span>
+										</a>
+									</li>
+									<li>
+										<a th:if="${matchCommand.isBettable()}"
+										   th:href="@{'/bet/createOrUpdate/' + ${matchCommand.matchId} + '/lose?redirectViewName=' + ${redirectViewName}}">
+                                            <span class="fas "
+												  th:text="@{' Lose ' + ${matchCommand.loseOdds} + ' '}"></span>
+										</a>
+									</li>
+								</ul>
+
+							</div>
+
+							<div class="col-xs-6 button-bar" sec:authorize="hasAuthority('PERM_EDIT_MATCH')">
+								<div class="row center">
+									<a sec:authorize="hasAuthority('PERM_EDIT_MATCH')" href="#"
+									   th:href="@{'/match/' + ${matchCommand.matchId}}"
+									   class="btn btn-primary" role="button" th:title="#{matches.list.editMatch}">
+										<span class="fas fa-edit"></span>
+									</a>
+
+									<a sec:authorize="hasAuthority('PERM_EDIT_MATCH_RESULT')" href="#"
+									   th:href="@{'/matchresult/' + ${matchCommand.matchId} + '?redirectViewName=' + ${redirectViewName}}"
+									   class="btn btn-info" role="button" th:title="#{matches.list.enterResult}">
+										<span class="fas fa-trophy"></span>
+									</a>
+								</div>
+							</div>
+
+						</div>
+
+
+					</div>
+				</div>
 			</div>
-			<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary" role="button" th:text="#{matches.list.createMatch}"></a>
-	</div>	
+		</div>
+	</div>
+
+	<!-- 分页 -->
+	<div class="modal-footer no-margin-top" th:if="${res.getTotalElements()>0}">
+		<ul class="pagination pull-right no-margin">
+
+			<!-- 首页 -->
+			<li>
+				<a th:href="${redirectUrl}">首页</a>
+			</li>
+
+			<!-- 上一页 -->
+			<li th:if="${res.hasPrevious()}">
+				<a th:href="${redirectUrl}+'?pageNum=' + ${res.previousPageable().getPageNumber()}"
+				   th:text="上一页"></a>
+
+			</li>
+
+			<!-- 中间页 -->
+			<li th:each="pageNum:${#numbers.sequence(0, res.getTotalPages() - 1)}">
+				<a th:href="${redirectUrl}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
+				   th:if="${pageNum ne res.pageable.getPageNumber()}"></a>
+				<a th:href="${redirectUrl}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}"
+				   th:if="${pageNum eq res.pageable.getPageNumber()}"
+				   th:style="'font-weight:bold;background: #6faed9;'"></a>
+			</li>
+
+			<!-- 下一页 -->
+			<li th:if="${res.hasNext()}">
+				<a th:href="${redirectUrl}+'?pageNum=' + ${res.nextPageable().getPageNumber()}" th:text="下一页"></a>
+			</li>
+
+			<!-- 尾页 -->
+			<li>
+				<a th:href="${redirectUrl}+'?pageNum=' + ${res.getTotalPages() - 1}">尾页</a>
+			</li>
+
+		</ul>
+	</div>
+
+	<a sec:authorize="hasAuthority('PERM_CREATE_MATCH')" href="#" th:href="@{/match/create}" class="btn btn-primary"
+	   role="button" th:text="#{matches.list.createMatch}"></a>
+</div>
 </body>
 <th:block layout:fragment="scripts">
 	<script type="text/javascript" th:src="@{/js/pages/tooltip.js}" charset="UTF-8"></script>

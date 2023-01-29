@@ -9,6 +9,7 @@ import de.fred4jupiter.fredbet.util.Validator;
 import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -36,8 +37,21 @@ public class MatchCommandMapper {
         return toMatchCommandsWithBets(username, allMatches);
     }
 
+    public List<MatchCommand> findAllMatchesPageable(String username, int pageNum, int pageSize) {
+        Page<Match> res = matchService.findAllMatchesPageable(pageNum, pageSize);
+        List<Match> allMatches = res.getContent();
+        return toMatchCommandsWithBets(username, allMatches);
+    }
+
+
     public List<MatchCommand> findAllUpcomingMatches(String username) {
         List<Match> allMatches = matchService.findUpcomingMatches();
+        return toMatchCommandsWithBets(username, allMatches);
+    }
+
+    public List<MatchCommand> findAllUpcomingMatchesPageable(String username, int pageNum, int pageSize) {
+        Page<Match> res = matchService.findAllMatchesPageable(pageNum, pageSize);
+        List<Match> allMatches = res.getContent();
         return toMatchCommandsWithBets(username, allMatches);
     }
 
@@ -46,6 +60,13 @@ public class MatchCommandMapper {
         return toMatchCommandsWithBets(currentUserName, allMatches);
     }
 
+    public List<MatchCommand> findMatchesByGroupPageable(String currentUserName, Group group, int pageNum, int pageSize) {
+        Page<Match> res = matchService.findMatchesByGroupPageable(group, pageNum, pageSize);
+        List<Match> allMatches = res.getContent();
+        return toMatchCommandsWithBets(currentUserName, allMatches);
+    }
+
+
 //    public List<MatchCommand> findJokerMatches(String currentUserName) {
 //        List<Match> allMatches = matchService.findJokerMatches(currentUserName);
 //        return toMatchCommandsWithBets(currentUserName, allMatches);
@@ -53,6 +74,12 @@ public class MatchCommandMapper {
 
     public List<MatchCommand> findMatchesOfToday(String currentUserName) {
         List<Match> allMatches = matchService.findMatchesOfToday();
+        return toMatchCommandsWithBets(currentUserName, allMatches);
+    }
+
+    public List<MatchCommand> findMatchesOfTodayPageable(String currentUserName, int pageNum, int pageSize) {
+        Page<Match> res = matchService.findMatchesOfTodayPageable(pageNum, pageSize);
+        List<Match> allMatches = res.getContent();
         return toMatchCommandsWithBets(currentUserName, allMatches);
     }
 
@@ -83,7 +110,7 @@ public class MatchCommandMapper {
         return matchCommand;
     }
 
-    private Map<Long, Bet> findBetsForMatchIds(String username) {
+    private Map<String, Bet> findBetsForMatchIds(String username) {
         List<Bet> allUserBets = bettingService.findAllByUsername(username);
         if (Validator.isEmpty(allUserBets)) {
             LOG.debug("Could not found any bets for user: {}", username);
@@ -92,8 +119,8 @@ public class MatchCommandMapper {
         return toBetMap(allUserBets);
     }
 
-    private Map<Long, Bet> toBetMap(List<Bet> allUserBets) {
-        Map<Long, Bet> matchIdBetMap = new HashMap<>();
+    private Map<String, Bet> toBetMap(List<Bet> allUserBets) {
+        Map<String, Bet> matchIdBetMap = new HashMap<>();
         for (Bet bet : allUserBets) {
             if (bet.getMatch() == null) {
                 LOG.error("No referenced match found for bet={}", bet);

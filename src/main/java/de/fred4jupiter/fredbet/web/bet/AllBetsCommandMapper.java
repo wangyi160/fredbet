@@ -28,7 +28,7 @@ public class AllBetsCommandMapper {
         this.webMessageUtil = webMessageUtil;
     }
 
-    public AllBetsCommand findAllBetsForMatchId(final Long matchId) {
+    public AllBetsCommand findAllBetsForMatchId(final String matchId) {
         if (matchId == null) {
             return null;
         }

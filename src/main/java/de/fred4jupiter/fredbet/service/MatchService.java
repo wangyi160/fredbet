@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -51,7 +54,7 @@ public class MatchService {
         return matchRepository.findAll();
     }
 
-    public Match findByMatchId(Long matchId) {
+    public Match findByMatchId(String matchId) {
         Assert.notNull(matchId, "matchId must be given");
         return matchRepository.getReferenceById(matchId);
     }
@@ -61,7 +64,7 @@ public class MatchService {
         return matchRepository.save(match);
     }
 
-    public void enterMatchResult(Long matchId, Consumer<Match> consumer) {
+    public void enterMatchResult(String matchId, Consumer<Match> consumer) {
         Match match = findMatchById(matchId);
         consumer.accept(match);
 
@@ -90,9 +93,9 @@ public class MatchService {
     }
 
     public List<Match> findUpcomingMatches() {
-        LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
+//        LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
         LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
-        return matchRepository.findUpcomingMatches(groupKickOffBeginSelectionDate, koKickOffBeginSelectionDate);
+        return matchRepository.findUpcomingMatches(koKickOffBeginSelectionDate);
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
@@ -101,11 +104,11 @@ public class MatchService {
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
-    public void deleteMatch(Long matchId) {
+    public void deleteMatch(String matchId) {
         matchRepository.deleteById(matchId);
     }
 
-    public Match findMatchById(Long matchId) {
+    public Match findMatchById(String matchId) {
         Optional<Match> matchOpt = matchRepository.findById(matchId);
         return matchOpt.orElse(null);
     }
@@ -136,4 +139,29 @@ public class MatchService {
 //        return !matches.isEmpty();
     	return false;
     }
+
+    public Page<Match> findAllMatchesPageable(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return matchRepository.findAll(pageable);
+    }
+
+    public Page<Match> findUpcomingMatchesPagable(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+//        LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
+        LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
+        return matchRepository.findUpcomingMatches(pageable,  koKickOffBeginSelectionDate);
+    }
+
+    public Page<Match> findMatchesOfTodayPageable(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        LocalDateTime startDateTime = LocalDate.now().atStartOfDay();
+        LocalDateTime endDateTime = LocalDate.now().atTime(23, 59, 59);
+        return matchRepository.findByKickOffDateBetweenOrderByKickOffDateAsc(pageable, startDateTime, endDateTime);
+    }
+
+    public Page<Match> findMatchesByGroupPageable(Group group, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return matchRepository.findByGroupOrderByKickOffDateAsc(pageable, group);
+    }
+
 }

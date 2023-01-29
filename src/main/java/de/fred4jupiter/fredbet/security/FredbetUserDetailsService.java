@@ -30,6 +30,7 @@ class FredbetUserDetailsService implements UserDetailsService {
         if (appUser == null) {
             throw new UsernameNotFoundException("Could not found user with username=" + username);
         }
+        System.out.println(appUser.getAuthorities());
         Collection<GrantedAuthority> permissions = permissionResolver.resolvePermissions(appUser.getAuthorities());
         appUser.setRoles(toRoles(permissions));
         return appUser;

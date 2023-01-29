@@ -1,16 +1,22 @@
 package de.fred4jupiter.fredbet.web.bet;
 
+import de.fred4jupiter.fredbet.domain.Match;
+import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
+
 public class BetCommand {
 
     private Long betId;
 
-    private Long matchId;
+    private String matchId;
+
+    private MatchCommand match;
 
 //    @NotNull
 //    @Min(value = 0)
@@ -46,7 +52,10 @@ public class BetCommand {
     private String betType;
     private double odds;
     private Double points;
-    
+
+    private Double reward;
+
+    private LocalDateTime createdAt;
 
     public String getBackUrl() {
         String view = RedirectViewName.resolveBackUrl(redirectViewName);
@@ -103,14 +112,21 @@ public class BetCommand {
         this.betId = betId;
     }
 
-    public Long getMatchId() {
+    public String getMatchId() {
         return matchId;
     }
 
-    public void setMatchId(Long matchId) {
+    public void setMatchId(String matchId) {
         this.matchId = matchId;
     }
 
+    public MatchCommand getMatch() {
+        return match;
+    }
+
+    public void setMatch(MatchCommand match) {
+        this.match = match;
+    }
 
     public String getIconPathTeamOne() {
         return iconPathTeamOne;
@@ -215,7 +231,21 @@ public class BetCommand {
 //    public void setJokerEditable(boolean jokerEditable) {
 //        this.jokerEditable = jokerEditable;
 //    }
-    
-    
 
+
+    public Double getReward() {
+        return reward;
+    }
+
+    public void setReward(Double reward) {
+        this.reward = reward;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

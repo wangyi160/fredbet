@@ -19,9 +19,9 @@ import java.util.Locale;
 public class Match implements MatchResult, MatchBusinessKey {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MATCH_ID")
-    private Long id;
+    private String id;
 
     @Embedded
     @AttributeOverrides({
@@ -77,9 +77,15 @@ public class Match implements MatchResult, MatchBusinessKey {
         return LocalDateTime.now().isAfter(kickOffDate);
     }
 
+    public boolean shouldFinished() {
+        return LocalDateTime.now().isAfter(kickOffDate.plusMinutes(300));
+    }
+
+
     public Integer getGoalDifference() {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
-            throw new IllegalStateException("Match has not finished! No goal results set!");
+            // throw new IllegalStateException("Match has not finished! No goal results set!");
+            return 0;
         }
         return Math.abs(teamOne.getGoals() - teamTwo.getGoals());
     }
@@ -109,7 +115,8 @@ public class Match implements MatchResult, MatchBusinessKey {
 
     private boolean isFirstWinner(Team teamOne, Team teamTwo) {
         if (teamOne.getGoals() == null || teamTwo.getGoals() == null) {
-            throw new IllegalStateException("Match has not finished! No goal results set!");
+            // throw new IllegalStateException("Match has not finished! No goal results set!");
+            return false;
         }
 
         if (getGoalDifference() == 0) {
@@ -218,7 +225,7 @@ public class Match implements MatchResult, MatchBusinessKey {
         return builder.toString();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

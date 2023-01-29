@@ -32,7 +32,12 @@ public class FredBetUserGroups {
     }
 
     private UserGroup getUserGroupByName(String name) {
+
+        System.out.println(groups.size());
+        System.out.println(name);
+
         for (UserGroup userGroup : groups) {
+            System.out.println(userGroup.getGroupName());
             if (userGroup.getGroupName().equals(name)) {
                 return userGroup;
             }

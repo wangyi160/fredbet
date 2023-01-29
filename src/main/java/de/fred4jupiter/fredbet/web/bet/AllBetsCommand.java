@@ -32,7 +32,7 @@ public class AllBetsCommand extends AbstractMatchHeaderCommand {
 		return allBetsForMatch;
 	}
 
-	public Long getMatchId() {
+	public String getMatchId() {
 		return this.match.getId();
 	}
 

@@ -15,7 +15,7 @@ public enum RedirectViewName {
 
     MATCHES_JOKER("/matches/joker");
 
-    private static final String GROUP_PREFIX = "GROUP@";
+    private static final String GROUP_PREFIX = "/matches/group/";
 
     private final String redirectViewName;
 

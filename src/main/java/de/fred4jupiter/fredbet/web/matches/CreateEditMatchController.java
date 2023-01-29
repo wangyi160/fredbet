@@ -65,7 +65,7 @@ public class CreateEditMatchController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
     @GetMapping("/{id}")
-    public String edit(@PathVariable("id") Long matchId, Model model) {
+    public String edit(@PathVariable("id") String matchId, Model model) {
         Match match = matchService.findByMatchId(matchId);
 
         Long numberOfBetsForThisMatch = bettingService.countByMatch(match);
@@ -102,7 +102,7 @@ public class CreateEditMatchController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_DELETE_MATCH + "')")
     @GetMapping("/delete/{matchId}")
-    public String delete(@PathVariable("matchId") Long matchId, RedirectAttributes redirect) {
+    public String delete(@PathVariable("matchId") String matchId, RedirectAttributes redirect) {
         LOG.debug("deleted match with id={}", matchId);
 
         Match match = matchService.findByMatchId(matchId);
@@ -147,7 +147,7 @@ public class CreateEditMatchController {
         return command;
     }
 
-    private Long save(CreateEditMatchCommand createEditMatchCommand) {
+    private String save(CreateEditMatchCommand createEditMatchCommand) {
         Match match = null;
         if (createEditMatchCommand.getMatchId() != null) {
             match = matchService.findByMatchId(createEditMatchCommand.getMatchId());

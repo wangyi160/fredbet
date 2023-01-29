@@ -26,7 +26,7 @@ public class IcsCalendarService {
         this.messageSourceUtil = messageSourceUtil;
     }
 
-    public IcsFile createCalendarEventFromMatch(Long matchId, Locale locale) {
+    public IcsFile createCalendarEventFromMatch(String matchId, Locale locale) {
         Match match = matchService.findByMatchId(matchId);
         if (match == null) {
             LOG.info("Cloud not find match with matchId={}", matchId);
