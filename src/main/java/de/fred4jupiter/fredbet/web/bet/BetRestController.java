@@ -11,9 +11,11 @@ import de.fred4jupiter.fredbet.web.WebMessageUtil;
 import de.fred4jupiter.fredbet.web.matches.MatchCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -39,77 +41,64 @@ public class BetRestController {
     private  WebMessageUtil webMessageUtil;
 
     @GetMapping
-    public List< BetCommand > getBetList() {
-        List<Bet> bets =  bettingService.findAllByUsername(securityService.getCurrentUserName());
+    public BetHistoryCommand getBetList(@RequestParam(value = "draw") int draw, @RequestParam(value = "start") int start,
+                                        @RequestParam(value = "length") int length) {
 
-        List< BetCommand > betCommands = new ArrayList<>();
+        int pageNum = start/length;
+        int pageSize = length;
+
+        Page<Bet> bets =  bettingService.findAllByUsernamePageable(securityService.getCurrentUserName(), pageNum, pageSize);
+
+
+        List< BetHistoryCommandData > datas = new ArrayList<>();
 
         for(Bet bet: bets) {
-            BetCommand betCommand = toBetCommand(bet);
-            betCommands.add(betCommand);
+            BetHistoryCommandData data = toBetHistoryCommandData(bet);
+            datas.add(data);
         }
 
-        return betCommands;
+//        if(datas.size()<10) {
+//            int left = 10 - datas.size();
+//            for(int i=0;i < left;i++) {
+//                datas.add(datas.get(0));
+//            }
+//        }
+
+        BetHistoryCommand betHistoryCommand = new BetHistoryCommand();
+        betHistoryCommand.setDraw(draw);
+        betHistoryCommand.setRecordsTotal(bets.getTotalElements());
+        betHistoryCommand.setRecordsFiltered(bets.getTotalElements());
+        betHistoryCommand.setData(datas);
+
+        return betHistoryCommand;
     }
 
-    private BetCommand toBetCommand(Bet bet) {
-        BetCommand betCommand = new BetCommand();
-        betCommand.setBetId(bet.getId());
-        betCommand.setMatchId(bet.getMatch().getId());
+    private BetHistoryCommandData toBetHistoryCommandData(Bet bet) {
+        BetHistoryCommandData betCommand = new BetHistoryCommandData();
+        betCommand.setCreatedAt(bet.getCreatedAt());
+        betCommand.setMatchGroup(bet.getMatch().getGroup().getName());
 
-        MatchCommand matchCommand = toMatchCommand(bet.getMatch());
-        betCommand.setMatch(matchCommand);
+        betCommand.setTeamNameOne(bet.getMatch().getTeamOne().getName());
+        betCommand.setTeamNameTwo(bet.getMatch().getTeamTwo().getName());
 
-//        betCommand.setGoalsTeamOne(bet.getGoalsTeamOne());
-//        betCommand.setGoalsTeamTwo(bet.getGoalsTeamTwo());
-//        betCommand.setPenaltyWinnerOne(bet.isPenaltyWinnerOne());
+        betCommand.setBetType(bet.getBetType());
 
-        final Locale locale = LocaleContextHolder.getLocale();
-        final Team teamOne = bet.getMatch().getTeamOne();
-        final Team teamTwo = bet.getMatch().getTeamTwo();
-        betCommand.setTeamNameOne(teamOne.getNameTranslated(messageSourceUtil, locale));
-        betCommand.setIconPathTeamOne(teamOne.getIconPathBig());
-        betCommand.setTeamNameTwo(teamTwo.getNameTranslated(messageSourceUtil, locale));
-        betCommand.setIconPathTeamTwo(teamTwo.getIconPathBig());
-
-        betCommand.setGroupMatch(bet.getMatch().isGroupMatch());
-
-//        Joker joker = jokerService.getJokerForUser(securityService.getCurrentUserName());
-//        betCommand.setNumberOfJokersUsed(joker.getNumberOfJokersUsed());
-//        betCommand.setMaxJokers(joker.getMax());
-//        betCommand.setUseJoker(bet.isJoker());
-//        betCommand.setJokerEditable(jokerService.isSettingJokerAllowed(securityService.getCurrentUserName(), bet.getMatch().getId()));
+        if(bet.getBetType().equals("win")) {
+            betCommand.setOdds(bet.getMatch().getWinOdds());
+        }
+        else if(bet.getBetType().equals("draw")) {
+            betCommand.setOdds(bet.getMatch().getDrawOdds());
+        }
+        else if(bet.getBetType().equals("lose")) {
+            betCommand.setOdds(bet.getMatch().getLoseOdds());
+        }
 
         betCommand.setPoints(bet.getPoints());
-        betCommand.setBetType(bet.getBetType());
-        betCommand.setOdds(bet.getOdds());
-
         betCommand.setReward(bet.getReward());
-        betCommand.setCreatedAt(bet.getCreatedAt());
 
 
         return betCommand;
     }
 
-    public MatchCommand toMatchCommand(Match match) {
-        Assert.notNull(match, "Match must be given");
-        MatchCommand matchCommand = new MatchCommand();
-        matchCommand.setMatchId(match.getId());
-        matchCommand.setCountryTeamOne(match.getTeamOne().getCountry());
-        matchCommand.setCountryTeamTwo(match.getTeamTwo().getCountry());
-        matchCommand.setTeamNameOne(webMessageUtil.getTeamNameOne(match));
-        matchCommand.setTeamNameTwo(webMessageUtil.getTeamNameTwo(match));
-        matchCommand.setTeamResultOne(match.getGoalsTeamOne());
-        matchCommand.setTeamResultTwo(match.getGoalsTeamTwo());
-        matchCommand.setKickOffDate(match.getKickOffDate());
-        matchCommand.setStadium(match.getStadium());
-        matchCommand.setGroup(match.getGroup());
 
-        matchCommand.setWinOdds(match.getWinOdds());
-        matchCommand.setDrawOdds(match.getDrawOdds());
-        matchCommand.setLoseOdds(match.getLoseOdds());
-
-//        matchCommand.setPenaltyWinnerOneMatch(match.isPenaltyWinnerOne());
-        return matchCommand;
-    }
 }

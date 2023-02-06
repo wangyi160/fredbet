@@ -33,7 +33,7 @@ public class MatchService {
      * show current K.O. matches that has been finished since 3 hours after
      * kick-off
      */
-    private static final int HOURS_SHOW_UPCOMING_OTHER_MATCHES = 3;
+    private static final int MINUTES_SHOW_UPCOMING_OTHER_MATCHES = 10;
 
     /**
      * show current group matches that has been finished since 2 hours after
@@ -54,9 +54,9 @@ public class MatchService {
         return matchRepository.findAll();
     }
 
-    public Match findByMatchId(String matchId) {
+    public Optional<Match> findByMatchId(String matchId) {
         Assert.notNull(matchId, "matchId must be given");
-        return matchRepository.getReferenceById(matchId);
+        return matchRepository.findById(matchId);
     }
 
     @CacheEvict(cacheNames = CacheNames.AVAIL_GROUPS, allEntries = true)
@@ -94,7 +94,7 @@ public class MatchService {
 
     public List<Match> findUpcomingMatches() {
 //        LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
-        LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
+        LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusMinutes(MINUTES_SHOW_UPCOMING_OTHER_MATCHES);
         return matchRepository.findUpcomingMatches(koKickOffBeginSelectionDate);
     }
 
@@ -142,13 +142,13 @@ public class MatchService {
 
     public Page<Match> findAllMatchesPageable(int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return matchRepository.findAll(pageable);
+        return matchRepository.findAllByOrderByKickOffDateDesc(pageable);
     }
 
     public Page<Match> findUpcomingMatchesPagable(int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
 //        LocalDateTime groupKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_GROUP_MATCHES);
-        LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusHours(HOURS_SHOW_UPCOMING_OTHER_MATCHES);
+        LocalDateTime koKickOffBeginSelectionDate = LocalDateTime.now().minusMinutes(MINUTES_SHOW_UPCOMING_OTHER_MATCHES);
         return matchRepository.findUpcomingMatches(pageable,  koKickOffBeginSelectionDate);
     }
 
@@ -156,12 +156,18 @@ public class MatchService {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         LocalDateTime startDateTime = LocalDate.now().atStartOfDay();
         LocalDateTime endDateTime = LocalDate.now().atTime(23, 59, 59);
-        return matchRepository.findByKickOffDateBetweenOrderByKickOffDateAsc(pageable, startDateTime, endDateTime);
+        return matchRepository.findByKickOffDateBetweenOrderByKickOffDateDesc(pageable, startDateTime, endDateTime);
     }
 
     public Page<Match> findMatchesByGroupPageable(Group group, int pageNum, int pageSize) {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return matchRepository.findByGroupOrderByKickOffDateAsc(pageable, group);
+        return matchRepository.findByGroupOrderByKickOffDateDesc(pageable, group);
+    }
+
+    public Page<Match> findFinishedMatchesWithoutResultPageable(int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(105);
+        return matchRepository.findFinishedMatchesWithMissingResult(pageable, localDateTime);
     }
 
 }

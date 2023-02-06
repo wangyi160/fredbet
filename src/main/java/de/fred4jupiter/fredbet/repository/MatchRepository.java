@@ -18,6 +18,9 @@ public interface MatchRepository extends JpaRepository<Match, String> {
 
 	List<Match> findAllByOrderByKickOffDateAsc();
 
+	List<Match> findAllByOrderByKickOffDateDesc();
+	Page<Match> findAllByOrderByKickOffDateDesc(Pageable pageable);
+
 	@Query("select m from Match m where m.kickOffDate > :koKickOffDate order by m.kickOffDate asc")
 	List<Match> findUpcomingMatches(@Param("koKickOffDate") LocalDateTime koKickOffDate);
 
@@ -41,17 +44,25 @@ public interface MatchRepository extends JpaRepository<Match, String> {
 	@Query("select m from Match m where m.kickOffDate < :date and m.teamOne.goals is null and m.teamTwo.goals is null order by m.kickOffDate asc")
 	List<Match> findFinishedMatchesWithMissingResult(@Param("date") LocalDateTime date);
 
+	@Query("select m from Match m where m.kickOffDate < :date and m.teamOne.goals is null and m.teamTwo.goals is null order by m.kickOffDate desc")
+	Page<Match> findFinishedMatchesWithMissingResult(Pageable pageable, @Param("date") LocalDateTime date);
+
 	@Query("select m from Match m where m.teamOne.goals is not null and m.teamTwo.goals is not null order by m.kickOffDate asc")
 	List<Match> findFinishedMatches();
 
 	// 分页需要
 	Page<Match> findAll(Pageable pageable);
 
-	@Query("select m from Match m where m.kickOffDate > :koKickOffDate order by m.kickOffDate asc")
+	@Query("select m from Match m where m.kickOffDate > :koKickOffDate order by m.kickOffDate desc")
 	Page<Match> findUpcomingMatches(Pageable pageable, @Param("koKickOffDate") LocalDateTime koKickOffDate);
 
-	Page<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
 
-	Page<Match> findByGroupOrderByKickOffDateAsc(Pageable pageable, Group group);
+//	Page<Match> findByKickOffDateBetweenOrderByKickOffDateAsc(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
+
+	Page<Match> findByKickOffDateBetweenOrderByKickOffDateDesc(Pageable pageable, LocalDateTime startDate, LocalDateTime endDate);
+
+//	Page<Match> findByGroupOrderByKickOffDateAsc(Pageable pageable, Group group);
+
+	Page<Match> findByGroupOrderByKickOffDateDesc(Pageable pageable, Group group);
 
 }

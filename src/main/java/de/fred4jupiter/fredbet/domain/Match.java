@@ -3,6 +3,7 @@ package de.fred4jupiter.fredbet.domain;
 import de.fred4jupiter.fredbet.imexport.MatchBusinessKey;
 import de.fred4jupiter.fredbet.props.FredbetConstants;
 import de.fred4jupiter.fredbet.util.MessageSourceUtil;
+import de.fred4jupiter.fredbet.web.matches.CreateEditMatchCommand;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,6 +18,26 @@ import java.util.Locale;
 @Entity
 @Table(name = "MATCHES")
 public class Match implements MatchResult, MatchBusinessKey {
+
+
+
+
+//    public Match(CreateEditMatchCommand matchCommand) {
+//        this.id = matchCommand.getMatchId();
+//        this.teamOne = new Team();
+//        this.teamTwo = new Team();
+//        this.getTeamOne().setCountry(matchCommand.getCountryTeamOne());
+//        this.getTeamTwo().setCountry(matchCommand.getCountryTeamTwo());
+//        this.getTeamOne().setName(matchCommand.getTeamNameOne());
+//        this.getTeamTwo().setName(matchCommand.getTeamNameTwo());
+//        this.setKickOffDate(matchCommand.getKickOffDate());
+//        this.setGroup(matchCommand.getGroup());
+//        this.setStadium(matchCommand.getStadium());
+//
+//        this.setWinOdds(matchCommand.getWinOdds());
+//        this.setDrawOdds(matchCommand.getDrawOdds());
+//        this.setLoseOdds(matchCommand.getLoseOdds());
+//    }
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -223,6 +244,10 @@ public class Match implements MatchResult, MatchBusinessKey {
         builder.append("kickOffDate", kickOffDate);
         builder.append("stadium", stadium);
         return builder.toString();
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getId() {

@@ -5,7 +5,10 @@ import de.fred4jupiter.fredbet.repository.GroupRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -46,6 +49,14 @@ public class ActivePageHandlerInterceptor implements HandlerInterceptor {
 
         // add top navigation items with groups
         modelAndView.addObject("groups", groups);
+
+        Set<String> groupLinks = new TreeSet<>();
+        for(Group group: groups) {
+            String firstLetter = group.getName().substring(0,1).toUpperCase();
+            groupLinks.add(firstLetter);
+        }
+        
+        modelAndView.addObject("groupLinks", groupLinks.stream().toList());
 
         // add top navigation items with submenus
 

@@ -24,7 +24,45 @@
 		<script type="text/javascript" th:src="@{/js/bootstrap-confirmation.min.js}"></script>
 		<script type="text/javascript" th:src="@{/lightbox/js/lightbox.min.js}"></script>
 
-		<script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+		<!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script> -->
+		<script type="text/javascript" th:src="@{/js/jquery.dataTables.min.js}"></script>
+
+		<script>
+			$(document).ready(function () {
+				$('.dropright .dra').on("click", function (e) {
+
+					e.stopPropagation();
+					e.preventDefault();
+
+					if (!$(this).next('ul').hasClass('show')) {
+						$(this).next('ul').addClass('show');
+					} else {
+						$(this).next('ul').removeClass('show');
+					}
+
+				});
+
+				// $('.dropright .dra').on("mouseout", function (e) {
+				// 	$(this).next('ul').removeClass('show');
+				// });
+			});
+		</script>
+
+		<style>
+			.dropright {
+				position: relative;
+			}
+
+			.dropdown-menu li a {
+				padding: 1px 20px;
+			}
+	
+			.dropright .dropdown-menu {
+				top: 0;
+				left: 100%;
+				margin-top: -1px;
+			}
+		</style>
 	</head>
 	<body>
 		<nav th:replace="~{_navigation :: menu}"></nav>

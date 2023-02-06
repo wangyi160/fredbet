@@ -1,7 +1,10 @@
 package de.fred4jupiter.fredbet.repository;
 
+
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +18,8 @@ public interface BetRepository extends JpaRepository<Bet, Long>, BetRepositoryCu
 	Bet findByUserNameAndMatch(String currentUsername, Match match);
 
 	List<Bet> findByUserName(String currentUsername);
+
+	Page<Bet> findByUserName(Pageable pageable, String currentUsername);
 
 	List<Bet> findByMatch(Match match);
 

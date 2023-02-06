@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.TimeZone;
 
 @Service
@@ -27,12 +28,13 @@ public class IcsCalendarService {
     }
 
     public IcsFile createCalendarEventFromMatch(String matchId, Locale locale) {
-        Match match = matchService.findByMatchId(matchId);
-        if (match == null) {
+        Optional<Match> matchOpt = matchService.findByMatchId(matchId);
+        if (matchOpt.isEmpty()) {
             LOG.info("Cloud not find match with matchId={}", matchId);
             return null;
         }
 
+        Match match = matchOpt.get();
         String title = createTitle(match, locale);
         String content = createContent(match, locale);
 

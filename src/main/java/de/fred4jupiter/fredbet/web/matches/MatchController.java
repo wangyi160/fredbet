@@ -36,7 +36,7 @@ public class MatchController {
     private final WebMessageUtil messageUtil;
 
     private final MatchCommandMapper matchCommandMapper;
-    
+
     private GroupRepository groupRepository;
 
     public MatchController(SecurityService securityBean, WebMessageUtil messageUtil, MatchCommandMapper matchCommandMapper, GroupRepository groupRepository) {
@@ -47,8 +47,17 @@ public class MatchController {
     }
 
     @GetMapping
-    public String listAllMatches(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "3", value = "pageSize") int pageSize) {
-        List<MatchCommand> matches = matchCommandMapper.findAllMatchesPageable(securityBean.getCurrentUserName(),pageNum, pageSize);
+    public String listAllMatches(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "6", value = "pageSize") int pageSize) {
+        if (pageNum < 0) {
+            pageNum = 0;
+        }
+
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+
+        List<MatchCommand> matches = matchCommandMapper.findAllMatchesPageable(securityBean.getCurrentUserName(), pageNum, pageSize);
+
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("all.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES);
@@ -63,7 +72,7 @@ public class MatchController {
 
 
     @GetMapping("upcoming")
-    public String upcomingMatches(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "3", value = "pageSize") int pageSize) {
+    public String upcomingMatches(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "6", value = "pageSize") int pageSize) {
         List<MatchCommand> matches = matchCommandMapper.findAllUpcomingMatchesPageable(securityBean.getCurrentUserName(), pageNum, pageSize);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("upcoming.matches"));
@@ -77,8 +86,8 @@ public class MatchController {
     }
 
     @GetMapping("/group/{groupUrl}")
-    public String listByGroup(@PathVariable("groupUrl") String groupUrl, Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "3", value = "pageSize") int pageSize) {
-//        final Group group = Group.valueOf(groupName);
+    public String listByGroup(@PathVariable("groupUrl") String groupUrl, Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "6", value = "pageSize") int pageSize) {
+        //        final Group group = Group.valueOf(groupName);
 
         // 需要将groupName变换成原始的样子
         String[] parts = groupUrl.split("_");
@@ -86,13 +95,13 @@ public class MatchController {
 
         Optional<Group> groupOpt = groupRepository.findById(groupName);
         List<MatchCommand> matches;
-        if(!groupOpt.isEmpty()) {
+        if (!groupOpt.isEmpty()) {
             Group group = groupOpt.get();
             matches = matchCommandMapper.findMatchesByGroupPageable(securityBean.getCurrentUserName(), group, pageNum, pageSize);
             model.addAttribute("allMatches", matches);
             model.addAttribute("heading", group.getName());
             model.addAttribute("redirectViewName", RedirectViewName.createRedirectForGroup(group));
-            model.addAttribute("redirectUrl", "/matches/group/"+group.getName());
+            model.addAttribute("redirectUrl", "/matches/group/" + group.getName());
 
             // 分页
             Page<Match> res = matchService.findMatchesByGroupPageable(group, pageNum, pageSize);
@@ -111,25 +120,25 @@ public class MatchController {
         }
 
 
-
         return VIEW_LIST_MATCHES;
     }
 
-//    @GetMapping("/joker")
-//    public String jokerMatches(Model model) {
-//        List<MatchCommand> matches = matchCommandMapper.findJokerMatches(securityBean.getCurrentUserName());
-//        model.addAttribute("allMatches", matches);
-//        model.addAttribute("heading", messageUtil.getMessageFor("joker.matches"));
-//        model.addAttribute("redirectViewName", RedirectViewName.MATCHES_JOKER);
-//        return VIEW_LIST_MATCHES;
-//    }
+    //    @GetMapping("/joker")
+    //    public String jokerMatches(Model model) {
+    //        List<MatchCommand> matches = matchCommandMapper.findJokerMatches(securityBean.getCurrentUserName());
+    //        model.addAttribute("allMatches", matches);
+    //        model.addAttribute("heading", messageUtil.getMessageFor("joker.matches"));
+    //        model.addAttribute("redirectViewName", RedirectViewName.MATCHES_JOKER);
+    //        return VIEW_LIST_MATCHES;
+    //    }
 
     @GetMapping("/today")
-    public String matchesOfToday(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "3", value = "pageSize") int pageSize) {
+    public String matchesOfToday(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "6", value = "pageSize") int pageSize) {
         List<MatchCommand> matches = matchCommandMapper.findMatchesOfTodayPageable(securityBean.getCurrentUserName(), pageNum, pageSize);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("today.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);
+        model.addAttribute("redirectUrl", "/matches/today");
 
         // 分页
         Page<Match> res = matchService.findMatchesOfTodayPageable(pageNum, pageSize);
@@ -140,11 +149,17 @@ public class MatchController {
     }
 
     @GetMapping("/finishednoresult")
-    public String finishedMatchesWithoutResult(Model model) {
-        List<MatchCommand> matches = matchCommandMapper.findFinishedMatchesNoResult(securityBean.getCurrentUserName());
+    public String finishedMatchesWithoutResult(Model model, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum, @RequestParam(defaultValue = "6", value = "pageSize") int pageSize) {
+        List<MatchCommand> matches = matchCommandMapper.findFinishedMatchesNoResultPageable(securityBean.getCurrentUserName(), pageNum, pageSize);
         model.addAttribute("allMatches", matches);
         model.addAttribute("heading", messageUtil.getMessageFor("finishednoresult.matches"));
         model.addAttribute("redirectViewName", RedirectViewName.MATCHES_TODAY);
+        model.addAttribute("redirectUrl", "/matches/finishednoresult");
+
+        // 分页
+        Page<Match> res = matchService.findFinishedMatchesWithoutResultPageable(pageNum, pageSize);
+        model.addAttribute("res", res);
+
         return VIEW_LIST_MATCHES;
     }
 }

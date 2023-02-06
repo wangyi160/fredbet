@@ -73,34 +73,36 @@ public class ExcelImportService {
     }
 
     private Match convertRowToMatch(Row row) {
-        if (row == null || row.getCell(0) == null) {
-            return null;
-        }
+//        if (row == null || row.getCell(0) == null) {
+//            return null;
+//        }
+//
+//        String country1 = row.getCell(0).getStringCellValue();
+//        String country2 = row.getCell(1).getStringCellValue();
+//        String group = row.getCell(2).getStringCellValue();
+//        Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
+//        String stadium = row.getCell(4).getStringCellValue();
+//
+//        Match match = new Match(row.getCell(0).getStringCellValue());
+//
+//        if (Country.fromName(country1) != null) {
+//            match.getTeamOne().setCountry(Country.fromName(country1));
+//        } else {
+//            match.getTeamOne().setName(country1);
+//        }
+//
+//        if (Country.fromName(country2) != null) {
+//            match.getTeamTwo().setCountry(Country.fromName(country2));
+//        } else {
+//            match.getTeamTwo().setName(country2);
+//        }
+//
+//        match.setGroup(new Group(group));
+//        match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
+//        match.setStadium(stadium);
+//        return match;
 
-        String country1 = row.getCell(0).getStringCellValue();
-        String country2 = row.getCell(1).getStringCellValue();
-        String group = row.getCell(2).getStringCellValue();
-        Date kickOffDate = DateUtil.getJavaDate(row.getCell(3).getNumericCellValue());
-        String stadium = row.getCell(4).getStringCellValue();
-
-        Match match = new Match();
-
-        if (Country.fromName(country1) != null) {
-            match.getTeamOne().setCountry(Country.fromName(country1));
-        } else {
-            match.getTeamOne().setName(country1);
-        }
-
-        if (Country.fromName(country2) != null) {
-            match.getTeamTwo().setCountry(Country.fromName(country2));
-        } else {
-            match.getTeamTwo().setName(country2);
-        }
-
-        match.setGroup(new Group(group));
-        match.setKickOffDate(DateUtils.toLocalDateTime(kickOffDate));
-        match.setStadium(stadium);
-        return match;
+        return null;
     }
 
 }

@@ -42,6 +42,8 @@ public class AllBetsCommandMapper {
         return toAllBetsCommand(match, filtered);
     }
 
+
+
     private AllBetsCommand toAllBetsCommand(Match match, List<Bet> filtered) {
         AllBetsCommand allBetsCommand = new AllBetsCommand();
         allBetsCommand.setAllBetsForMatch(filtered);

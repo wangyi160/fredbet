@@ -13,6 +13,9 @@ import de.fred4jupiter.fredbet.util.Validator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -85,6 +88,11 @@ public class BettingService {
 
     public List<Bet> findAllByUsername(String username) {
         return betRepository.findByUserName(username);
+    }
+
+    public Page<Bet> findAllByUsernamePageable(String username, int pageNum, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return betRepository.findByUserName(pageable, username);
     }
 
     public List<Match> findMatchesToBet(String username) {

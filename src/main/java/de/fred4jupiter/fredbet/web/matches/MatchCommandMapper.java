@@ -50,7 +50,7 @@ public class MatchCommandMapper {
     }
 
     public List<MatchCommand> findAllUpcomingMatchesPageable(String username, int pageNum, int pageSize) {
-        Page<Match> res = matchService.findAllMatchesPageable(pageNum, pageSize);
+        Page<Match> res = matchService.findUpcomingMatchesPagable(pageNum, pageSize);
         List<Match> allMatches = res.getContent();
         return toMatchCommandsWithBets(username, allMatches);
     }
@@ -85,6 +85,12 @@ public class MatchCommandMapper {
 
     public List<MatchCommand> findFinishedMatchesNoResult(String currentUserName) {
         List<Match> allMatches = matchService.findFinishedMatchesWithoutResult();
+        return toMatchCommandsWithBets(currentUserName, allMatches);
+    }
+
+    public List<MatchCommand> findFinishedMatchesNoResultPageable(String currentUserName, int pageNum, int pageSize) {
+        Page<Match> res = matchService.findFinishedMatchesWithoutResultPageable(pageNum, pageSize);
+        List<Match> allMatches = res.getContent();
         return toMatchCommandsWithBets(currentUserName, allMatches);
     }
 

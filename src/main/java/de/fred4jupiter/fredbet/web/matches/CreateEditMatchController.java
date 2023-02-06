@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/match")
@@ -65,8 +66,16 @@ public class CreateEditMatchController {
 
     @PreAuthorize("hasAuthority('" + FredBetPermission.PERM_EDIT_MATCH + "')")
     @GetMapping("/{id}")
-    public String edit(@PathVariable("id") String matchId, Model model) {
-        Match match = matchService.findByMatchId(matchId);
+    public String edit(@PathVariable("id") String matchId, Model model, RedirectAttributes redirect) {
+
+        Optional<Match> matchOpt = matchService.findByMatchId(matchId);
+
+        if (matchOpt.isEmpty()) {
+            webMessageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
+            return "redirect:/matches";
+        }
+
+        Match match = matchOpt.get();
 
         Long numberOfBetsForThisMatch = bettingService.countByMatch(match);
         CreateEditMatchCommand createEditMatchCommand = toCreateEditMatchCommand(match);
@@ -105,11 +114,14 @@ public class CreateEditMatchController {
     public String delete(@PathVariable("matchId") String matchId, RedirectAttributes redirect) {
         LOG.debug("deleted match with id={}", matchId);
 
-        Match match = matchService.findByMatchId(matchId);
-        if (match == null) {
+        Optional<Match> matchOpt = matchService.findByMatchId(matchId);
+
+        if (matchOpt.isEmpty()) {
             webMessageUtil.addErrorMsg(redirect, "msg.match.notFound", matchId);
             return "redirect:/matches";
         }
+
+        Match match = matchOpt.get();
 
         matchService.deleteMatch(matchId);
 
@@ -131,6 +143,7 @@ public class CreateEditMatchController {
 
     private CreateEditMatchCommand toCreateEditMatchCommand(Match match) {
         CreateEditMatchCommand command = new CreateEditMatchCommand();
+        command.setMatchId(match.getId());
         command.setCountryTeamOne(match.getTeamOne().getCountry());
         command.setCountryTeamTwo(match.getTeamTwo().getCountry());
         command.setTeamNameOne(match.getTeamOne().getName());
@@ -148,9 +161,13 @@ public class CreateEditMatchController {
     }
 
     private String save(CreateEditMatchCommand createEditMatchCommand) {
+
         Match match = null;
         if (createEditMatchCommand.getMatchId() != null) {
-            match = matchService.findByMatchId(createEditMatchCommand.getMatchId());
+            Optional<Match> matchOpt = matchService.findByMatchId(createEditMatchCommand.getMatchId());
+
+            if(!matchOpt.isEmpty())
+                match = matchOpt.get();
         }
 
         if (match == null) {
@@ -159,12 +176,14 @@ public class CreateEditMatchController {
 
         toMatch(createEditMatchCommand, match);
 
+
         match = matchService.save(match);
         createEditMatchCommand.setMatchId(match.getId());
         return match.getId();
     }
 
     private void toMatch(CreateEditMatchCommand matchCommand, Match match) {
+        match.setId(matchCommand.getMatchId());
         match.getTeamOne().setCountry(matchCommand.getCountryTeamOne());
         match.getTeamTwo().setCountry(matchCommand.getCountryTeamTwo());
         match.getTeamOne().setName(matchCommand.getTeamNameOne());
